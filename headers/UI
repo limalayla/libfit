@@ -1,0 +1,4 @@
+#include "../src/ui/fwidget.hpp"
+#include "../src/ui/ui.hpp"
+#include "../src/ui/fpattern.hpp"
+#include "../src/ui/finputhandler.hpp"
