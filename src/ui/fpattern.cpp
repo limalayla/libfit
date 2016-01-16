@@ -3,6 +3,10 @@
 namespace fit
 {
 	
+FPattern FPattern::none				(' ', ' ', ' ', ' ');
+FPattern FPattern::test				('*', '*', '*', '*');
+FPattern FPattern::defaultPattern	(' ', '|', '-', '+');
+	
 FPattern::FPattern(char background, char vertical, char horizontal, char corner)
 	: FObject(),
 	  m_background(background),

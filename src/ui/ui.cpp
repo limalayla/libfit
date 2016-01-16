@@ -92,7 +92,7 @@ void UI::display()
 	std::cout << std::endl;
 }
 
-FString UI::output()
+FString UI::output() const
 {
 	return "";
 }
@@ -103,5 +103,6 @@ void UI::run(const bool* stop)
 }
 
 std::shared_ptr<FWidget> UI::operator[](const FString& name) { return get(name); }
+std::vector<char>& 		 UI::operator[](fuint16 index) { return m_grid[index]; }
 
 }

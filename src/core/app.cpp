@@ -7,6 +7,7 @@ App::App(int argn, char* argv[])
 	:	FObject(),
 		m_inputHandling(), m_stopInputThread(new bool(false)),
 		m_ui(), m_stopUIThread(new bool(false)),
+		m_state(0), 
 		m_argn(argn), m_argv(argv)
 {
 	setBlockingInput(false);
@@ -73,6 +74,7 @@ void App::delEvent(fuint32 id)
 	//App::m_events.erase(m_events.begin() + id);
 }
 
-int App::state() const { return m_state; }
+int  App::state()          const { return m_state; }
+void App::setState(int state)    { m_state = state; }
 
 }

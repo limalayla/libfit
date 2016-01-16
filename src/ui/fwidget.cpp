@@ -2,10 +2,6 @@
 
 namespace fit
 {
-// 
-FPattern FWidget::noPattern			= FPattern(' ', ' ', ' ', ' ');
-FPattern FWidget::testPattern		= FPattern('*', '*', '*', '*');
-FPattern FWidget::defaultPattern	= FPattern(' ', '|', '-', '+');
 
 FWidget::FWidget(const FRect& rect, FPattern& pattern)
 	: FRect(rect), m_visible(true), m_gridChanged(false), m_pattern(pattern)
@@ -78,12 +74,13 @@ void FWidget::createGrid()
 
 void FWidget::refresh()
 {
+	m_grid.clear();
 	createGrid();
 	initPattern(m_pattern);
 	m_gridChanged = false;
 }
 
-std::vector<std::vector<char> > FWidget::getCharGrid()
+std::vector<std::vector<char> >& FWidget::getCharGrid()
 {
 	if(m_gridChanged) refresh();
 	return m_grid;

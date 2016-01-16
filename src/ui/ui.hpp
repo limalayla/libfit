@@ -23,12 +23,13 @@ class UI : public FWidget, public FThreadable
         virtual void refresh();
 				void display();
 				
-        virtual void run(const bool* stop);
+        virtual void run(const bool* stop) override;
         
-        FString output();
+        FString output() const;
         
         // Operators Overloading
 		std::shared_ptr<FWidget> operator[](const FString& name);
+		std::vector<char>& operator[](fuint16 index);
         
 
     protected:

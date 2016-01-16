@@ -12,7 +12,7 @@ class FWidget : public FRect
 {
     public:
 		// Constructors - Destructor
-			FWidget(const FRect& rect = FRect(0, 0, 0, 0), FPattern& pattern= FWidget::defaultPattern);
+			FWidget(const FRect& rect = FRect(0, 0, 0, 0), FPattern& pattern= FPattern::defaultPattern);
 			FWidget(const FWidget& other);
 			virtual ~FWidget();
         
@@ -30,7 +30,7 @@ class FWidget : public FRect
 			virtual void refresh();
 		
 		// Returns a copy of the updated internal grid (useful while displaying)
-			std::vector<std::vector<char> > getCharGrid();
+			virtual std::vector<std::vector<char> >& getCharGrid();
 			
 		// Signal that a modification has occured
 			void signalModif() const; // Should be pure, but not right now for debug purpose
@@ -38,11 +38,6 @@ class FWidget : public FRect
 		
 		void initPattern(const FPattern& pattern);
 
-		// Static definition
-			static FPattern noPattern;
-			static FPattern testPattern;
-			static FPattern defaultPattern;
-		
 		// Parents accessors
 			virtual fuint16 getx() const;
 			virtual fuint16 gety() const;

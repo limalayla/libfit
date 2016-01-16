@@ -5,6 +5,12 @@
 
 namespace fit
 {
+	
+	/*
+	 *	Disclaimer: Implementation in .h (or .hpp) is dirty,
+	 *  but is apparently the "best" way to do it. Meh. 
+	 * 
+	*/
 
 // Class to hold a couple of a certain value
 template<typename T>

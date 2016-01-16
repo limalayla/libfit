@@ -23,7 +23,8 @@ class App : public FObject
         static void setBlockingInput(bool enable);
         
         UI& ui();
-        int state() const;
+        int 	state() const;
+        void setState(int state);
         
         
 	private:

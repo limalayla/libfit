@@ -13,6 +13,7 @@
 // Macros définitions
 #define MACRO_ERRINDEX(index, size)	throw std::logic_error("Index out of range (" + to_string(index) + "/" + to_string(size) + ") at line " + to_string(__LINE__) + " in " + __FILE__;
 #define MACRO_ERRNAMEMAP(key)		throw std::logic_error("Key does not exist (" + key + ") at line " + std::to_string(__LINE__)  + " in " + __FILE__);
+#define TEMPLATE_ template<typename T>
 
 namespace fit
 {
@@ -47,7 +48,18 @@ class FObject
 
 // General to_string function
 template<typename T>
-inline static FString to_string(const T& elem);
+inline static FString to_string(const T& elem)
+{
+	/* Return the result of putting the value in a iostream
+	 * Works well with all standard type,
+	 * but needs an overriding of operator<< in order to work with custom classes
+	*/
+	
+	std::stringstream res;
+	res << elem;
+	
+	return res.str();
+}
 
 }
 

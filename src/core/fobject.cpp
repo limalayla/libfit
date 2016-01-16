@@ -29,18 +29,4 @@ FString FObject::toString() const
 	return res.str();
 }
 
-template<typename T>
-FString to_string(const T& elem)
-{
-	/* Return the result of putting the value in a iostream
-	 * Works well with all standard type,
-	 * but needs an overriding of operator<< in order to work with custom classes
-	*/
-	
-	std::stringstream res;
-	res << elem;
-	
-	return res.str();
-}
-
 }
