@@ -10,10 +10,12 @@
 #include <map>
 #include <stdexcept>
 
+//#define DEBUG 1
+
 // Macros définitions
 #define MACRO_ERRINDEX(index, size)	throw std::logic_error("Index out of range (" + to_string(index) + "/" + to_string(size) + ") at line " + to_string(__LINE__) + " in " + __FILE__;
 #define MACRO_ERRNAMEMAP(key)		throw std::logic_error("Key does not exist (" + key + ") at line " + std::to_string(__LINE__)  + " in " + __FILE__);
-#define TEMPLATE_ template<typename T>
+#define MACRO_TEMPLATED template<typename T>
 
 namespace fit
 {
@@ -21,13 +23,16 @@ namespace fit
 // Temporary renaming, FString class should be done in the future 
 typedef std::string FString;
 
-// Standard type renaming
+// Standard types renaming
 typedef unsigned char		fuint8;
 typedef unsigned short int	fuint16;
 typedef unsigned int		fuint32;
 typedef unsigned long int	fuint64;
 
-// Base class for all other classes
+/*!
+ * \brief The FObject class is the base class for all other in this lib
+ *        It has an id, and implements a basic toString (inspired from java)
+ */
 class FObject
 {
     public:
@@ -39,22 +44,21 @@ class FObject
 			virtual FString toString() const;
         
     protected:
-        fuint16 m_id;
+        fuint16 m_id;   /* Unique identifier for all objects */
     
     private:
-		// Counter to keep unique trace of all objects
-        static fuint16 nextID;
+        static fuint16 nextID;  /* Counter to keep unique trace of all objects */
 };
 
-// General to_string function
-template<typename T>
+/*!
+ *  \brief to_string: Converts any kind of element into a string via a std::stringstream
+ *          works well with basic type, but needs operator<< for objects
+ *  \param elem is any kind of value,
+ *  \return FString containing the elem under the form of a string
+ */
+MACRO_TEMPLATED
 inline static FString to_string(const T& elem)
 {
-	/* Return the result of putting the value in a iostream
-	 * Works well with all standard type,
-	 * but needs an overriding of operator<< in order to work with custom classes
-	*/
-	
 	std::stringstream res;
 	res << elem;
 	

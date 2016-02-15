@@ -10,12 +10,25 @@
 namespace fit
 {
 	
-
+/*!
+ * \brief The App class holds all infos and threads for the program to run on
+ *        Meant to be always accessible
+ */
 class App : public FObject
 {
     public:
-		// Constructors - Destructor
+
+        /*!
+         * \brief The EasterEgg enum is used to implement easter eggs easily
+         */
+        enum class EasterEgg
+        {
+            AmericanFlag
+        };
+
+        // Constructors - Destructor
         App(int argn= 0, char* argv[]= nullptr);
+        App(const EasterEgg& ee);
         virtual ~App();
         
         static void addEvent(fuint16 typeEvent, void* arg);
@@ -25,26 +38,24 @@ class App : public FObject
         UI& ui();
         int 	state() const;
         void setState(int state);
-        
-        
+
 	private:
-		// Input Handling
-		FInputHandler m_inputHandling;
-		bool* m_stopInputThread;
-		std::thread m_inputThread;
+        // Input Handling
+        FInputHandler m_inputHandling;      /* Object meant to create and manage events related to all inputs (keyboard etc) */
+        bool*         m_stopInputThread;    /* Boolean shared with the thread, stopping it when needed */
+        std::thread   m_inputThread;        /* Thread meant to run along with the app, checking all inputs (keyboard etc) */
 		
 		// UI Handling
-		UI m_ui;
-		bool* m_stopUIThread;
-		std::thread m_UIThread;
+        UI            m_ui;                 /* Object managing the ui: contains it, refresh it, holds the widgets */
+        bool*         m_stopUIThread;       /* Boolean shared with the thread, stopping it when needed */
+        std::thread   m_UIThread;           /* Thread meant to run along with the app, updating the ui when needed */
 		
-		static std::vector<FEvent> m_events;
+        static std::vector<FEvent> m_events;/* All event of the app */
 		
-		int m_state;
-		
-		// ToDo argn & argv accessors
-		int m_argn;
-		char** m_argv;
+        // Links to the os
+        int           m_state;              /* State of the app, meant to be returned at the end of the program */
+        int           m_argn;               /* Number of arguments in command line (1st one is the command name itself) */
+        char**        m_argv;               /* Array of strings to those arguments */
 };
 
 }

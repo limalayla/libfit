@@ -7,22 +7,23 @@
 namespace fit
 {
 
+/*!
+ * \brief The FLabel class is a widget to display text
+ */
 class FLabel : public FWidget
 {
     public:
-		// Constructors - Destructor
-			FLabel(FString msg, const FRect& rect= FRect(1, 1, 3, 0), const FTextAlign& textAlign = FTextAlign::UpLeft);
-			virtual ~FLabel();
+        // Constructors - Destructor
+        FLabel(FString msg, const FRect& rect= FRect(1, 1, 3, 0), const FTextAlign& textAlign = FTextAlign::UpLeft);
+        virtual ~FLabel();
         
-        // Rebuild the internal grid according to its content
-			virtual void refresh() override;
-		
-		// Returns a copy of the updated internal grid (useful while displaying)
-			virtual std::vector<std::vector<char> >& getCharGrid() override;
+        void refresh() override;
+
+        FString toString() const override;
 	
 	private:
-		FString m_str;
-		FTextAlign m_ta;
+        FString m_str;      /* String held and displayed by the label  */
+        FTextAlign m_ta;    /* Text alignement for the text to display */
 };
 
 }

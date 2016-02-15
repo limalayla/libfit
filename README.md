@@ -5,8 +5,16 @@ ToDo:
 * Redefine usefulness of a member grid is really useful for every widgets since the ui takes a copy of it
 * Multi - thread support
 * Evenements logic
+* UI : Inputs
+       Lists
 
 New:
+* toString implemented (mostly)
+* Fixed FLabels
+* Added easter egg
+* Commented all the core part with the qt style
+
+Previous:
 * Char by char access to the UI
 * Fix to the app::state not initiated
 * Moved the static patterns to the pattern source file an class
@@ -16,4 +24,4 @@ New:
 * Disabled deep copy fort FPatterns 
 
 Bugs:
-* The Flabels dont show anything
+* 

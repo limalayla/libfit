@@ -6,7 +6,9 @@
 namespace fit
 {
 
-// Interface for all objects that can be runned into threads
+/*!
+ * \brief FThreadable Interface for all objects that can be runned into threads
+ */
 class FThreadable : virtual public FObject
 {
     public:

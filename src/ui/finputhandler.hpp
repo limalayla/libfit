@@ -6,7 +6,9 @@
 namespace fit
 {
 
-// Class to handle inputs (only keyboard for now)
+/*!
+ * \brief The FInputHandler class handles all inputs (keyboard etc) and create adequate events
+ */
 class FInputHandler : public FThreadable
 {
     public:
@@ -15,10 +17,11 @@ class FInputHandler : public FThreadable
         virtual ~FInputHandler();
 
 		// Override of the start() function
-		virtual void run(const bool* stop);
+        void run(const bool* stop) override;
 };
 
 }
+
 #include "../core/app.hpp"
 
 #endif // FINPUTHANDLER_COMPILED

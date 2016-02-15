@@ -9,7 +9,7 @@
 namespace fit
 {
 
-TEMPLATE_
+MACRO_TEMPLATED
 class FMatrix : public FObject
 {
     public:
@@ -38,14 +38,14 @@ class FMatrix : public FObject
 			FMatrix<T>& operator/=(double coef);
 			
 	private:
-		std::vector<std::vector<T> > m_mat;
+        std::vector<std::vector<T> > m_mat; /* 2D Array of any given type */
 };
 
-TEMPLATE_ FMatrix<T> operator+(const FMatrix<T>& a, const FMatrix<T>& b);
-TEMPLATE_ FMatrix<T> operator-(const FMatrix<T>& a, const FMatrix<T>& b);
-TEMPLATE_ FMatrix<T> operator*(const FMatrix<T>& a, const FMatrix<T>& b);
-TEMPLATE_ FMatrix<T> operator*(const FMatrix<T>& a, double coef);
-TEMPLATE_ FMatrix<T> operator/(const FMatrix<T>& a, double coef);
+MACRO_TEMPLATED FMatrix<T> operator+(const FMatrix<T>& a, const FMatrix<T>& b);
+MACRO_TEMPLATED FMatrix<T> operator-(const FMatrix<T>& a, const FMatrix<T>& b);
+MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& a, const FMatrix<T>& b);
+MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& a, double coef);
+MACRO_TEMPLATED FMatrix<T> operator/(const FMatrix<T>& a, double coef);
 
 typedef FMatrix<double> FDMat;
 

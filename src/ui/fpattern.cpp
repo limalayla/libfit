@@ -6,6 +6,7 @@ namespace fit
 FPattern FPattern::none				(' ', ' ', ' ', ' ');
 FPattern FPattern::test				('*', '*', '*', '*');
 FPattern FPattern::defaultPattern	(' ', '|', '-', '+');
+FPattern FPattern::band				('/', '/', '/', '/');
 	
 FPattern::FPattern(char background, char vertical, char horizontal, char corner)
 	: FObject(),
@@ -38,6 +39,19 @@ char FPattern::cornerTL()	const { return m_cornerTL; }
 char FPattern::cornerTR()	const { return m_cornerTR; }
 char FPattern::cornerBL()	const { return m_cornerBL; }
 char FPattern::cornerBR()	const { return m_cornerBR; }
+
+///
+/// \brief FPattern::iSolid checks if the pattern will look like one solid piece
+/// \return true if all char composing the pattern are the same, false otherwise
+///
+bool FPattern::iSolid()	const
+{
+    return FTools::areAllElementsEqual<char>({
+                                                 m_background,
+                                                 m_top, m_bottom, m_left, m_right,
+                                                 m_cornerTL, m_cornerTR, m_cornerBL, m_cornerBR
+                                             });
+}
 
 }
 

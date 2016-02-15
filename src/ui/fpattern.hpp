@@ -1,7 +1,7 @@
 #ifndef FPATTERN_COMPILED
 #define FPATTERN_COMPILED
 
-#include "../core/fobject.hpp"
+#include "../core/ftools.hpp"
 
 namespace fit
 {
@@ -25,6 +25,7 @@ class FPattern : public FObject
         // Static definition
 			static FPattern none;
 			static FPattern test;
+			static FPattern band;
 			static FPattern defaultPattern;
         
         // Members accessors
@@ -40,7 +41,10 @@ class FPattern : public FObject
 			char cornerTR() const;
 			char cornerBL() const;
 			char cornerBR() const;
-        
+			
+		// Tools
+            bool iSolid() const;
+
 	private:
 		char m_background;
 

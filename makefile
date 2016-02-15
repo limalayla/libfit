@@ -3,6 +3,7 @@ FLAGS = -Wall -g -pthread
 
 CC    = $(GPP) $(FLAGS)
 
+all: ex
 
 ex: install ex.cpp
 	$(CC) ex.cpp -L. -lfit -o ex
@@ -54,9 +55,12 @@ obj/fthreadable.o: src/core/fthreadable.cpp src/core/fthreadable.hpp obj/fobject
 
 obj/fevent.o: 	   src/core/fevent.cpp src/core/fevent.hpp obj/fobject.o
 	$(CC) -c -fPIC src/core/fevent.cpp -o obj/fevent.o
-	
+
 obj/ftextalign.o:  src/ui/ftextalign.cpp src/ui/ftextalign.hpp obj/fobject.o
 	$(CC) -c -fPIC src/ui/ftextalign.cpp -o obj/ftextalign.o
+
+obj/ftools.o:  src/ui/ftools.cpp src/ui/ftools.hpp obj/fobject.o
+	$(CC) -c -fPIC src/ui/ftools.cpp -o obj/ftools.o
 
 obj/fobject.o: 	   src/core/fobject.cpp src/core/fobject.hpp
 	$(CC) -c -fPIC src/core/fobject.cpp -o obj/fobject.o

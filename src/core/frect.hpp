@@ -6,7 +6,9 @@
 namespace fit
 {
 
-// Class to hold a composition of 4 points
+/*!
+ * \brief The FRect class holds a composition of 4 points
+ */
 class FRect : public FVec2<fuint16>
 {
     public:
@@ -15,8 +17,10 @@ class FRect : public FVec2<fuint16>
         FRect(const FRect& other);
         virtual ~FRect();
 
-		fuint16 height;
-		fuint16 width ;
+        fuint16 height; /* Height of the rectangle */
+        fuint16 width ; /* Width  of the rectangle */
+		
+        FString toString() const override;
 };
 
 }

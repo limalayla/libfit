@@ -49,6 +49,8 @@ class FWidget : public FRect
 			virtual void 	seth(fuint16 height);
 			virtual void 	setw(fuint16 width );
 
+			virtual FString toString() const override;
+
     protected:
     
 		// Redefining the parents (frect and fvec2)'s members as protected

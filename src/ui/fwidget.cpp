@@ -86,8 +86,8 @@ std::vector<std::vector<char> >& FWidget::getCharGrid()
 	return m_grid;
 }
 
-fuint16 FWidget::getx() const { return x; }
-fuint16 FWidget::gety() const { return y; }
+fuint16 FWidget::getx() const { return x+1; }
+fuint16 FWidget::gety() const { return y+1; }
 fuint16 FWidget::geth() const { return height; }
 fuint16 FWidget::getw() const { return width;  }
 
@@ -95,5 +95,13 @@ void FWidget::setx(fuint16 x) { if(x-1 != this->x) m_gridChanged = true; this->x
 void FWidget::sety(fuint16 y) { if(y-1 != this->y) m_gridChanged = true; this->y = y-1; }
 void FWidget::seth(fuint16 height) { if(height != this->height) m_gridChanged = true; this->height = height; }
 void FWidget::setw(fuint16 width ) { if(width  != this->width ) m_gridChanged = true; this->width  = width ; }
+
+FString FWidget::toString() const
+{
+	std::stringstream res;
+	res << "FWidget {" << FRect::toString() << "}";
+	
+	return res.str();
+}
 
 }

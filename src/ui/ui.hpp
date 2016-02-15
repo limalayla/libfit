@@ -27,13 +27,20 @@ class UI : public FWidget, public FThreadable
         
         FString output() const;
         
+        void clear();
+        
         // Operators Overloading
 		std::shared_ptr<FWidget> operator[](const FString& name);
 		std::vector<char>& operator[](fuint16 index);
         
+        virtual FString toString() const override;
 
     protected:
 		std::map<FString, std::shared_ptr<FWidget> > m_widgets;
+		
+	#ifdef DEBUG
+		private: void d_dispWidgets() const;
+	#endif
 };
 
 }
