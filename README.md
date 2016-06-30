@@ -9,14 +9,11 @@ ToDo:
        Lists
 
 New:
-* Structure for Progression Bar
-* Modified some comments to match the qt style again
+* Implemented nodes (to be used by tree and linked lists)
 
 Previous:
-* toString implemented (mostly)
-* Fixed FLabels
-* Added easter egg
-* Commented all the core part with the qt style
+* Structure for Progression Bar
+* Modified some comments to match the qt style again
 
 Bugs:
 *
