@@ -29,7 +29,7 @@ void FInputHandler::run(const bool* stop)
 	while(!*stop)
 	{
 		input = std::cin.get();
-        App::addEvent(FEvent::Type::keyPressed, (void*) new char(input));
+        //App::addEvent(FEvent::Type::keyPressed, (void*) new char(input));
 	}
 }
 

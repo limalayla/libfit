@@ -39,7 +39,7 @@ class FWidget : public FRect
 		void initPattern(const FPattern& pattern);
 
 		// Parents accessors
-			virtual fuint16 getx() const;
+            virtual fuint16 getx() const;
 			virtual fuint16 gety() const;
 			virtual fuint16 geth() const;
 			virtual fuint16 getw() const;

@@ -44,22 +44,22 @@ App::App(const EasterEgg& eEgg)
  */
 App::~App()
 {
-	if(m_stopInputThread != NULL && !m_stopInputThread && m_inputThread.joinable())
+    setBlockingInput(true);
+
+    if(m_stopInputThread != nullptr && !m_stopInputThread && m_inputThread.joinable())
 	{
 		*m_stopInputThread = true;
 		m_inputThread.join();
 	}
 	
-	if(m_stopUIThread != NULL && !m_stopUIThread && m_UIThread.joinable())
+    if(m_stopUIThread != nullptr && !m_stopUIThread && m_UIThread.joinable())
 	{
 		*m_stopUIThread = true;
 		m_UIThread.join();
 	}
 	
-	if(m_stopInputThread != NULL) delete m_stopInputThread;
-	if(m_stopUIThread != NULL)    delete m_stopUIThread;
-	
-	setBlockingInput(true);
+    if(m_stopInputThread != nullptr) delete m_stopInputThread;
+    if(m_stopUIThread != nullptr)    delete m_stopUIThread;
 }
 
 /*!

@@ -6,9 +6,9 @@
 namespace fit
 {
 
-// Class used to describe the look of a widget
-// No deep copy
-// Constructed once, never modified
+/*!
+ * \brief The FPattern class is used to describe the look of a widget, it is not meant to be deep copied, nor modified
+ */
 class FPattern : public FObject
 {
     public:
@@ -46,18 +46,19 @@ class FPattern : public FObject
             bool iSolid() const;
 
 	private:
-		char m_background;
+        /* Different tiles of the pattern */
+            char m_background;
 
-		char m_top;
-		char m_bottom;
-		
-		char m_left;
-		char m_right;
-		
-		char m_cornerTL;
-		char m_cornerTR;
-		char m_cornerBL;
-		char m_cornerBR;
+            char m_top;
+            char m_bottom;
+
+            char m_left;
+            char m_right;
+
+            char m_cornerTL;
+            char m_cornerTR;
+            char m_cornerBL;
+            char m_cornerBR;
 };
 
 }

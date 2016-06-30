@@ -9,19 +9,14 @@ ToDo:
        Lists
 
 New:
+* Structure for Progression Bar
+* Modified some comments to match the qt style again
+
+Previous:
 * toString implemented (mostly)
 * Fixed FLabels
 * Added easter egg
 * Commented all the core part with the qt style
 
-Previous:
-* Char by char access to the UI
-* Fix to the app::state not initiated
-* Moved the static patterns to the pattern source file an class
-* Created a FTextAlign class (not used now)
-* Created a FLabel class to display strings (not used either)
-* Created a FMatrix class
-* Disabled deep copy fort FPatterns 
-
 Bugs:
-* 
+*

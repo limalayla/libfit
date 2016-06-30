@@ -120,8 +120,13 @@ FString UI::output() const
 }
 
 void UI::run(const bool* stop)
-{
-	while(!stop) display();
+{/*
+    while(!stop)
+    {
+        std::unique_lock<std::mutex> lk(m);
+        cv.wait(lk);
+        display();
+    }*/
 }
 
 std::shared_ptr<FWidget> UI::operator[](const FString& name) { return get(name); }

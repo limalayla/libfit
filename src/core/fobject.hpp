@@ -9,6 +9,7 @@
 #include <sstream>
 #include <map>
 #include <stdexcept>
+#include <condition_variable>
 
 //#define DEBUG 1
 

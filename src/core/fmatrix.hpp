@@ -1,5 +1,5 @@
-#ifndef FMATRIX_COMPILED
-#define FMATRIX_COMPILED
+#ifndef FMATRIX_HPP
+#define FMATRIX_HPP
 
 #include "fobject.hpp"
 
@@ -17,26 +17,26 @@ class FMatrix : public FObject
 			FMatrix(fuint16 height= 0, fuint16 width= 0);
 			FMatrix(const FMatrix<T>& other);
 			virtual ~FMatrix();
-			
+
 			std::vector<T>& operator[](fuint16 index);
-			
+
 			fuint16 height() const;
 			fuint16 width () const;
-			
+
 			void dispDebug() const;
 			void init(const T& val);
-			
+
 			explicit operator bool() const;
 			bool operator!() const;
-			
+
 			FMatrix<T>& operator=(const FMatrix<T>& other);
-			
+
 			FMatrix<T>& operator+=(const FMatrix&);
 			FMatrix<T>& operator-=(const FMatrix&);
 			FMatrix<T>& operator*=(const FMatrix&);
 			FMatrix<T>& operator*=(double coef);
 			FMatrix<T>& operator/=(double coef);
-			
+
 	private:
         std::vector<std::vector<T> > m_mat; /* 2D Array of any given type */
 };
@@ -51,6 +51,6 @@ typedef FMatrix<double> FDMat;
 
 }
 
-#include "fmatrix_impl.cpp"
+#include "fmatrix.cpp"
 
-#endif // FMATRIX_COMPILED
+#endif // FMATRIX_HPP

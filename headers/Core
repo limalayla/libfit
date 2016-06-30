@@ -4,3 +4,4 @@
 #include "../src/core/fevent.hpp"
 #include "../src/core/app.hpp"
 #include "../src/core/fmatrix.hpp"
+#include "../src/core/ftree.hpp"

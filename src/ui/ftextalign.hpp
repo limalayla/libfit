@@ -6,6 +6,9 @@
 namespace fit
 {
 
+/*!
+ * \brief The FTextAlign class is used to
+ */
 class FTextAlign : public FObject
 {
     public:
@@ -16,7 +19,7 @@ class FTextAlign : public FObject
 			static FTextAlign UpLeft;
 	
 	private:
-		fuint8 m_value;
+        fuint8 m_value; /* Due to the small number of alignement possibilities, these are stocked in a single 8 bit integer */
 };
 
 }

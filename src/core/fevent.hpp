@@ -17,16 +17,12 @@ class FEvent : public FObject
         FEvent(fuint16 type, void* arg);
         virtual ~FEvent();
 
-        /*!
-         * \brief The Type enum defines the type of the event
-         */
-        enum Type
-        {
-            keyPressed
-        };
+        void wait();
         
-	private:
-        fuint16 m_type;     /* Type of the event (eg: keyboardEvent) */
+    private:
+        //std::mutex m_mutex;
+        //std::condition_variable m_cv;
+        fuint16 m_type;
         void*   m_arg;      /* Options passed along with the event */
 };
 
