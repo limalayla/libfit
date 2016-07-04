@@ -3,6 +3,8 @@
 
 #include "fwidget.hpp"
 
+namespace fit {
+
 class FProgBar : public FWidget
 {
 public:
@@ -10,5 +12,7 @@ public:
 
 
 };
+
+} // namespace fit
 
 #endif // FPROGBAR_HPP

@@ -6,12 +6,12 @@ namespace fit
 UI::UI(fuint16 height, fuint16 width)
 	: FWidget(FRect(0, 0, height, width))
 {
-	
+
 }
 
 UI::~UI()
 {
-	
+
 }
 
 
@@ -29,12 +29,13 @@ bool UI::add(const FString& name, FWidget* widget)
         return false;
     }
 
+	// Really useful?
     if(m_widgets.size() >= std::pow(2, 32) - 1)
 	{
 		//FObject::errstr = __FILE__ + " " + std::to_string(__LINE__) + " "  + __FUNCTION__ + " : maximum number of FWidgets reached for this ui";
         return false;
 	}
-	
+
 	m_widgets[name] = std::shared_ptr<FWidget>(widget);
 	m_gridChanged = true;
     return true;
@@ -49,7 +50,7 @@ bool UI::add(const FString& name, FWidget* widget)
 std::shared_ptr<FWidget> UI::get(const FString& name)
 {
 	if(m_widgets.find(name) != m_widgets.end()) return m_widgets[name];
-	
+
 	MACRO_ERRNAMEMAP(name)
     return std::shared_ptr<FWidget>(new FWidget());
 }
@@ -61,13 +62,13 @@ std::shared_ptr<FWidget> UI::get(const FString& name)
 ///
 bool UI::del(const FString& name)
 {
-	
+
 	if(m_widgets.find(name) != m_widgets.end())
 	{
 		m_widgets.erase(m_widgets.find(name));
 		return true;
 	}
-	
+
 	MACRO_ERRNAMEMAP(name)
 	return false;
 }
@@ -75,13 +76,13 @@ bool UI::del(const FString& name)
 void UI::refresh()
 {
 	std::vector<std::vector<char> > widget;
-	
+
     for(auto it= m_widgets.begin(); it!= m_widgets.end() ; ++it)
 	{
         if(it->second->isVisible())
         {
             widget = it->second->getCharGrid();
-			
+
             for(fuint16 i= 0; i< widget.size() && it->second->getx() + i< height-1; i++)
 			{
                 for(fuint16 j= 0; j< widget[i].size() && it->second->gety() + j< width-1; j++)
@@ -90,18 +91,18 @@ void UI::refresh()
                         m_grid[it->second->getx() + i][it->second->gety() + j] = widget[i][j];
 				}
 			}
-			
+
 			widget.clear();
 		}
 	}
-	
+
 	m_gridChanged = false;
 }
 
 void UI::display()
 {
 	if(m_gridChanged) refresh();
-	
+
 	for(fuint16 i= 0; i< height; i++)
 	{
 		for(fuint16 j= 0; j< width; j++)
@@ -136,11 +137,11 @@ FString UI::toString() const
 {
 	std::stringstream res;
 	res << "UI {nbWidgets= " << m_widgets.size() << ", " << FRect::toString() << "}";
-	
+
 	return res.str();
 }
 
-void UI::clear() 
+void UI::clear()
 {
 	m_widgets.clear();
 	m_gridChanged = true;

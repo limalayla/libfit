@@ -1,0 +1,3 @@
+INSTALL(FILES ui core all
+        DESTINATION include/libfit
+        PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)

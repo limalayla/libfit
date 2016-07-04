@@ -1,7 +1,6 @@
 #ifndef FTREE_HPP
 #define FTREE_HPP
 
-#include "fobject.hpp"
 #include "fnode.hpp"
 
 namespace fit {
@@ -18,8 +17,14 @@ class FTree : public FObject
         fuint32 m_nelem;
 };
 
-} // Namespace fit
+TEMPLATE_NODE
+FTree<DataType>::FTree(const FNode<DataType>& head)
+    :   m_head(head),
+        m_nelem(1)
+{
 
-#include "ftree.cpp"
+}
+
+} // Namespace fit
 
 #endif // FTREE_HPP

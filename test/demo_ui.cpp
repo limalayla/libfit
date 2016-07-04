@@ -1,11 +1,11 @@
-#include "headers/Core"
-#include "headers/UI"
+#include "../src/core/app.hpp"
+#include "../src/ui/flabel.hpp"
+//#include <libfit/all>
 
 using namespace fit;
 
 int main(int argn, char* argv[])
 {
-#if 0
 	// Create the app
     App ex(argn, argv);
 
@@ -34,19 +34,6 @@ int main(int argn, char* argv[])
     std::cout << console["label1"]->toString() << std::endl;
     std::cout << console.toString() << std::endl;
 
-	// The app has a state, which can be set at anytime by the user
-	std::cout << ex.state() << std::endl;
-
+	// The app has a state, settable by the user
     return ex.state();
-    }
-#endif
-
-    FNode<int> node1(1);
-    FNode<int> node2(2);
-    FNode<int> node3(node2);
-    node1.addChild(node2);
-    node1.addChild(node3);
-    node1.display();
-
-    std::cout << std::endl << node1[1] << std::endl;
 }

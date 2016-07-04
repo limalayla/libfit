@@ -1,7 +1,0 @@
-#include "../src/core/fobject.hpp"
-#include "../src/core/fvec2.hpp"
-#include "../src/core/frect.hpp"
-#include "../src/core/fevent.hpp"
-#include "../src/core/app.hpp"
-#include "../src/core/fmatrix.hpp"
-#include "../src/core/ftree.hpp"
