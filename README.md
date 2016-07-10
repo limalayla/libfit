@@ -97,15 +97,16 @@ sudo make install # To build then install the library and headers in the right p
 * Evenements logic
 * UI : Inputs
        Lists
+* Implement Trees
 
 
 ###### New:
-* Switched the build system from handmade makefile to cmake
-* New Presentation
+* Implemented linked lists
 
 
 ###### Previous:
-* Implemented nodes (to be used by tree and linked lists)
+* Switched the build system from handmade makefile to cmake
+* New Presentation
 
 
 ###### Bugs:

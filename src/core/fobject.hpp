@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <condition_variable>
 
-//#define DEBUG 1
+#define DEBUG
 
 // Macros définitions
 #define MACRO_ERRINDEX(index, size)	throw std::logic_error("Index out of range (" + to_string(index) + "/" + to_string(size) + ") at line " + to_string(__LINE__) + " in " + __FILE__;
@@ -21,7 +21,7 @@
 namespace fit
 {
 
-// Temporary renaming, FString class should be done in the future 
+// Temporary renaming, FString class should be done in the future
 typedef std::string FString;
 
 // Standard types renaming
@@ -40,15 +40,15 @@ class FObject
 		// Constructors - Destructor
 			FObject();
 			virtual ~FObject();
-        
+
         // To string member function inspired from java
 			virtual FString toString() const;
-        
+
     protected:
-        fuint16 m_id;   /* Unique identifier for all objects */
-    
+        fuint32 m_id;   /* Unique identifier for all objects */
+
     private:
-        static fuint16 nextID;  /* Counter to keep unique trace of all objects */
+        static fuint32 nextID;  /* Counter to keep unique trace of all objects */
 };
 
 /*!
@@ -62,7 +62,7 @@ inline static FString to_string(const T& elem)
 {
 	std::stringstream res;
 	res << elem;
-	
+
 	return res.str();
 }
 
