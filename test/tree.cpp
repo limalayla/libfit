@@ -24,5 +24,4 @@ int main(int argn, char* argv[])
     std::cout << ll[4] << std::endl;
     std::cout << ll[5] << std::endl;
     std::cout << ll[6] << std::endl;
-    std::cout << ll[7] << std::endl;
 }

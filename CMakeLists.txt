@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.0)
 project (libfit)
 
 set (CMAKE_VERBOSE_MAKEFILE off)
-set (libfit_version 0.5)
+set (libfit_version 0.5.5)
 
 add_compile_options (-std=c++14)
 add_compile_options (-Wall)
@@ -11,7 +11,6 @@ add_compile_options (-pthread)
 
 add_subdirectory (src)
 add_subdirectory (test)
-add_subdirectory (headers)
 
 enable_testing ()
 add_test (NAME demo_ui COMMAND demo_ui)

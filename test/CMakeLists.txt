@@ -3,3 +3,6 @@ target_link_libraries (tree libfit)
 
 add_executable (demo_ui demo_ui.cpp)
 target_link_libraries (demo_ui libfit)
+
+add_executable (log log.cpp)
+target_link_libraries (log libfit)

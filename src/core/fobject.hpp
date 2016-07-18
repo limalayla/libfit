@@ -1,15 +1,17 @@
 #ifndef FOBJECT_COMPILED
 #define FOBJECT_COMPILED
 
+#include <algorithm>
+#include <cmath>
+#include <condition_variable>
+#include <chrono>
 #include <iostream>
 #include <memory>
-#include <vector>
-#include <cmath>
-#include <string>
-#include <sstream>
 #include <map>
+#include <sstream>
+#include <string>
 #include <stdexcept>
-#include <condition_variable>
+#include <vector>
 
 #define DEBUG
 
@@ -30,8 +32,8 @@ typedef unsigned short int	fuint16;
 typedef unsigned int		fuint32;
 typedef unsigned long int	fuint64;
 
-/*!
- * \brief The FObject class is the base class for all other in this lib
+/**
+ * The FObject class is the base class for all other in this lib
  *        It has an id, and implements a basic toString (inspired from java)
  */
 class FObject

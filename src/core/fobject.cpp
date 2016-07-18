@@ -22,12 +22,14 @@ FObject::FObject()
  */
 FObject::~FObject()
 {
-	
+
 }
 
-/*!
- * \brief FObject::toString : get the debug info about an object (if possible in all classes) inspired by java
- * \return a string containing the useful informations about the object (recursively calls his parents)
+/**
+ * Get the debug info about an object (if possible in all classes) coming from java.
+ * Je suis une description
+ *
+ * \return String containing useful informations about the object (recursively calls his parents)
  */
 FString FObject::toString() const
 {

@@ -91,6 +91,15 @@ sudo make install # To build then install the library and headers in the right p
 ```
 
 
+###### New:
+* Implemented logs
+* Moved headers
+
+
+###### Previous:
+* Implemented linked lists
+
+
 ###### ToDo:
 * Redefine usefulness of a member grid is really useful for every widgets since the ui takes a copy of it
 * Multi - thread support
@@ -98,16 +107,9 @@ sudo make install # To build then install the library and headers in the right p
 * UI : Inputs
        Lists
 * Implement Trees
-
-
-###### New:
-* Implemented linked lists
-
-
-###### Previous:
-* Switched the build system from handmade makefile to cmake
-* New Presentation
+* Documentation with doxygen
 
 
 ###### Bugs:
-* Nothing atm. Open an issue if you see any!
+* Tools::keyFromValue randomly throwing segmentation faults (haven't reproduced since some time)
+* Open an issue if you see any!

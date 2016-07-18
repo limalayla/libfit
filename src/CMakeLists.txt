@@ -21,7 +21,11 @@ INSTALL (TARGETS libfit
 )
 
 INSTALL (DIRECTORY core ui
-         DESTINATION include/libfit/headers
+         DESTINATION include/libfit
          FILES_MATCHING PATTERN "*.hpp"
          PERMISSIONS OWNER_READ GROUP_READ WORLD_READ
 )
+
+INSTALL(FILES UI Core All
+        DESTINATION include/libfit
+        PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)

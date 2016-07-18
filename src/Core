@@ -1,0 +1,7 @@
+#include "core/fobject.hpp"
+#include "core/fvec2.hpp"
+#include "core/frect.hpp"
+#include "core/fevent.hpp"
+#include "core/app.hpp"
+#include "core/fmatrix.hpp"
+#include "core/ftree.hpp"

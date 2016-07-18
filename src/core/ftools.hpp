@@ -1,5 +1,5 @@
-#ifndef FTOOLS_COMPILED
-#define FTOOLS_COMPILED
+#ifndef FTOOLS_HPP
+#define FTOOLS_HPP
 
 #include "fobject.hpp"
 
@@ -14,11 +14,11 @@ class FTools : public FObject
     public:
         FTools();
 
-        ///
-        /// \brief FTools::areAllElementsEqual checks if a set of the same type contains the same value
-        /// \param set is a vector of whatever (comparable) wich will be tested
-        /// \return true if all the elements are the same, false otherwise
-        ///
+        /*!
+            \brief Checks if a set of the same type contains the same value
+            \param set Vector of whatever (comparable) wich will be tested
+            \return true if all the elements are the same, false otherwise
+        */
         template<typename T>
         static bool areAllElementsEqual(const std::vector<T>& set)
         {
@@ -33,10 +33,35 @@ class FTools : public FObject
             return true;
         }
 
-    protected:
+        template<typename keyT, typename valueT>
+        static keyT keyByVal(const std::map<keyT, valueT> map_, const valueT& val)
+        {
+            keyT res;
+            std::cout << "Enter (" << val << ")" << std::endl;
+            std::cout.clear();
+
+            for(auto it= map_.cbegin(); it != map_.cend(); ++it)
+            {
+                std::cout << it->first << "\t -- " << it->second << "\t-> ";
+                if(it->second == val)
+                {
+                    std::cout << "Y" << std::endl;
+                    res = it->first;
+                    break;
+                }
+                else
+                    std::cout << "N" << std::endl;
+            }
+            std::cout << "Exit (" << res << ")" << std::endl;
+
+            return res;
+        }
 
 };
 
-}
+FString toUpper(const FString& str);
+FString trim(const FString& str);
 
-#endif // FTOOLS_COMPILED
+} // Namespace fit
+
+#endif // FTOOLS_HPP

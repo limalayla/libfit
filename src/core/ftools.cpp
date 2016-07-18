@@ -12,4 +12,28 @@ FTools::FTools()
 
 }
 
+FString toUpper(const FString& str)
+{
+    FString res(str);
+
+    for(fuint32 i= 0; i< str.size(); i++)
+        if(std::isalpha(str[i]))
+            res[i] = std::toupper(str[i]);
+
+    std::cout << str << " " << res << std::endl;
+
+    return res;
 }
+
+FString trim(const FString& str)
+{
+    FString res(str);
+
+    size_t first = res.find_first_not_of(' ');
+    size_t last = res.find_last_not_of(' ');
+
+    std::cout << str << " " << res << std::endl;
+    return res.substr(first, (last-first+1));
+}
+
+} // namespace fit

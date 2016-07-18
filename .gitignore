@@ -1,4 +1,5 @@
 build/*
+doc/*
 
 # Compiled Object files
 obj/*
