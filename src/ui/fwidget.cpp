@@ -3,7 +3,7 @@
 namespace fit
 {
 
-FWidget::FWidget(const FRect& rect, FPattern& pattern)
+FWidget::FWidget(const FRect& rect, const FPattern& pattern)
 	: FRect(rect), m_visible(true), m_gridChanged(false), m_pattern(pattern)
 {
 	createGrid();
@@ -13,12 +13,12 @@ FWidget::FWidget(const FRect& rect, FPattern& pattern)
 FWidget::FWidget(const FWidget& other)
 	: FRect(other), m_visible(other.m_visible), m_grid(other.m_grid), m_gridChanged(true), m_pattern(other.m_pattern)
 {
-	
+
 }
 
 FWidget::~FWidget()
 {
-	
+
 }
 
 // Visibility Accessors
@@ -36,7 +36,7 @@ void FWidget::signalModif() const{} // Should be pure
 void FWidget::initPattern(const FPattern& pattern)
 {
 	fuint16 t(0), l(0), b((height==0) ? height : height-1), r((width==0) ? width : width-1);
-	
+
 	for(fuint16 i= 0; i< height; i++)
 	{
 		for(fuint16 j= 0; j< width; j++)
@@ -45,10 +45,10 @@ void FWidget::initPattern(const FPattern& pattern)
 			else if(i == t && j == r) m_grid[i][j] = pattern.cornerTR();
 			else if(i == b && j == l) m_grid[i][j] = pattern.cornerBL();
 			else if(i == b && j == r) m_grid[i][j] = pattern.cornerBR();
-				 
+
 			else if(i == t)	m_grid[i][j] = pattern.top();
 			else if(i == b)	m_grid[i][j] = pattern.bottom();
-			
+
 			else if(j == l)	m_grid[i][j] = pattern.left();
 			else if(j == r)	m_grid[i][j] = pattern.right();
 			else m_grid[i][j] = pattern.background();
@@ -59,12 +59,12 @@ void FWidget::initPattern(const FPattern& pattern)
 void FWidget::createGrid()
 {
 	m_grid.reserve(height);
-	
+
 	for(fuint16 i= 0; i< height; i++)
 	{
 		m_grid.push_back(std::vector<char>());
 		m_grid[i].reserve(width);
-		
+
 		for(fuint16 j= 0; j< width; j++)
 		{
 			m_grid[i].push_back('*');
@@ -100,7 +100,7 @@ FString FWidget::toString() const
 {
 	std::stringstream res;
 	res << "FWidget {" << FRect::toString() << "}";
-	
+
 	return res.str();
 }
 

@@ -16,32 +16,32 @@ class FPattern : public FObject
 			FPattern(char background, char vertical, char horizontal, char corner);
 			FPattern(char background, char top, char bottom, char left, char right, char cornerTL, char cornerTR, char cornerBL, char cornerBR);
 			virtual ~FPattern();
-        
+
         // Disallow deep copy
 			FPattern(const FPattern&) = delete;
 			FPattern(const FPattern*) = delete;
 			FPattern& operator=(const FPattern&) = delete;
-		
+
         // Static definition
-			static FPattern none;
-			static FPattern test;
-			static FPattern band;
-			static FPattern defaultPattern;
-        
+			static const FPattern none;
+			static const FPattern test;
+			static const FPattern band;
+			static const FPattern defaultPattern;
+
         // Members accessors
 			char background() const;
-			
+
 			char top() const;
 			char bottom() const;
-			
+
 			char left() const;
 			char right() const;
-			
+
 			char cornerTL() const;
 			char cornerTR() const;
 			char cornerBL() const;
 			char cornerBR() const;
-			
+
 		// Tools
             bool iSolid() const;
 
@@ -64,4 +64,3 @@ class FPattern : public FObject
 }
 
 #endif // FPATTERN_COMPILED
-

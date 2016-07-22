@@ -2,11 +2,11 @@
 
 namespace fit
 {
-	
-FPattern FPattern::none				(' ', ' ', ' ', ' ');
-FPattern FPattern::test				('*', '*', '*', '*');
-FPattern FPattern::defaultPattern	(' ', '|', '-', '+');
-FPattern FPattern::band				('/', '/', '/', '/');
+
+const FPattern FPattern::none				(' ', ' ', ' ', ' ');
+const FPattern FPattern::test				('*', '*', '*', '*');
+const FPattern FPattern::defaultPattern		(' ', '|', '-', '+');
+const FPattern FPattern::band				('/', '/', '/', '/');
 
 /*!
  * \brief FPattern::FPattern 1st constructor (light)
@@ -37,7 +37,7 @@ FPattern::~FPattern()
 {}
 
 char FPattern::background()	const { return m_background; }
-        
+
 char FPattern::top()		const { return m_top; }
 char FPattern::bottom()		const { return m_bottom; }
 
@@ -63,4 +63,3 @@ bool FPattern::iSolid()	const
 }
 
 }
-

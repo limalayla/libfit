@@ -92,12 +92,13 @@ sudo make install # To build then install the library and headers in the right p
 
 
 ###### New:
-* Implemented logs
-* Moved headers
+* Documentation : Doxygen file created
+* Misc.: Made the patterns const
 
 
 ###### Previous:
-* Implemented linked lists
+* Implemented logs
+* Moved headers
 
 
 ###### ToDo:
