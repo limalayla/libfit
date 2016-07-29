@@ -12,9 +12,9 @@ int main(int argn, char* argv[])
     ll.push(5);
     ll.display();
 
-    ll.add(6, 2);
+    ll.insert(6, 2);
     ll.display();
-    ll.add(7, 0);
+    ll.insert(7, 0);
     ll.display();
 
     std::cout << ll[0] << std::endl;

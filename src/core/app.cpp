@@ -4,9 +4,9 @@ namespace fit
 {
 
 /*!
- * \brief App::App Constructor, launches the ui and input thread to start the application
- * \param argn: Number of arguments in command line (1st one is the command name itself)
- * \param argv: Array of strings to those arguments
+ * App Default Constructor, launches the ui and input thread to start the application
+ * \param Number of arguments in command line (1st one is the command name itself)
+ * \param Array of strings to those arguments
  */
 App::App(int argn, char* argv[])
     :	FObject(),
@@ -21,8 +21,8 @@ App::App(int argn, char* argv[])
 }
 
 /*!
- * \brief App::App Alternative constructor meant only for easter egg purpose (quite useless)
- * \param eEgg: identifier of the easter egg
+ * App Special Constructor
+ * \param Identifier of the easter egg
  */
 App::App(const EasterEgg& eEgg)
     :	App()
@@ -40,7 +40,7 @@ App::App(const EasterEgg& eEgg)
 }
 
 /*!
- * \brief App::~App Desctructor
+ * \brief Desctructor
  */
 App::~App()
 {
@@ -51,55 +51,55 @@ App::~App()
 		*m_stopInputThread = true;
 		m_inputThread.join();
 	}
-	
+
     if(m_stopUIThread != nullptr && !m_stopUIThread && m_UIThread.joinable())
 	{
 		*m_stopUIThread = true;
 		m_UIThread.join();
 	}
-	
+
     if(m_stopInputThread != nullptr) delete m_stopInputThread;
     if(m_stopUIThread != nullptr)    delete m_stopUIThread;
 }
 
 /*!
- * \brief App::setBlockingInput cryptic code found (and understood as much as possible) to toggle the necessity of hitting enter to input data
- * \param enable: enable or disable it
+ * Toggles having to hit enter to input data
+ * \param Enable or disable it
  */
 void App::setBlockingInput(bool enable)
 {
     struct termios ttystate;
- 
+
     //get the terminal state
     tcgetattr(0, &ttystate);
- 
+
     if (enable)
     {
         //turn on canonical mode
         ttystate.c_lflag |= ICANON | ECHO;
     }
-    
+
     else
     {
         //turn off canonical mode
         ttystate.c_lflag &= ~(ICANON | ECHO);
-        
+
         //minimum of number input read.
         ttystate.c_cc[VMIN] = 1;
     }
-    
+
     //set the terminal attributes.
     tcsetattr(0, TCSANOW, &ttystate);
 }
 
 /*!
- * \brief App::ui gets a reference to the ui used by the application to work directly on it
- * \return the reference to the internal ui
+ * Getter to the ui
+ * \return A reference to the ui used by the application to work directly on it
  */
 UI& App::ui() { return m_ui; }
 
 /*!
- * /!\ Not implemented, ikr
+ * \todo
  */
 void App::addEvent(fuint16 typeEvent, void* arg)
 {
@@ -107,7 +107,7 @@ void App::addEvent(fuint16 typeEvent, void* arg)
 }
 
 /*!
- * /!\ Not implemented, ikr again
+ * \todo
  */
 void App::delEvent(fuint32 id)
 {
@@ -115,14 +115,14 @@ void App::delEvent(fuint32 id)
 }
 
 /*!
- * \brief App::state: state getter
- * \return the current application state
+ * State getter
+ * \return Current application state
  */
 int App::state() const { return m_state; }
 
 /*!
- * \brief App::setState: state setter
- * \param state: value to set
+ * State setter
+ * \param Value to set
  */
 void App::setState(int state) { m_state = state; }
 

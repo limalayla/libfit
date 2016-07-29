@@ -7,8 +7,8 @@ namespace fit
 {
 
 /*!
- * \brief The FEvent class is meant to contain any kind of evenement, along with some options (eg: keyPressed - keyID)
- * \todo Instead of void*, should be templated ?
+ * Class representing any kind of evenement, along with some options (eg: keyPressed - keyID)
+ * \todo Find a way of working (only that… *sigh*)
  */
 class FEvent : public FObject
 {
@@ -18,7 +18,7 @@ class FEvent : public FObject
         virtual ~FEvent();
 
         void wait();
-        
+
     private:
         //std::mutex m_mutex;
         //std::condition_variable m_cv;
@@ -29,4 +29,3 @@ class FEvent : public FObject
 }
 
 #endif // FEVENT_COMPILED
-

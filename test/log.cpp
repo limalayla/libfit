@@ -5,7 +5,7 @@ using namespace fit;
 
 int main(int argn, char* argv[])
 {
-    FLog log(FLog::Warn);
+    FLog log(FLog::LogLevel::Warn);
 
     log.d() << "Debug";
     log.i() << "Info";
