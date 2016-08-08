@@ -3,78 +3,93 @@
 
 #include "fobject.hpp"
 
+// Macro for throwing an exception when accessing ouside the boundaries of a matrix
 #define MACRO_WRONGMATSIZE(a, b) throw std::logic_error("Wrong matrix size for a matrix product (" + to_string(a) + " != " + to_string(b) + ") at line " + to_string(__LINE__) + " in " + __FILE__);
-#define MACRO_EMPTYMAT			 throw std::logic_error("Empty Matrix at line " + to_string(__LINE__) + " in " + __FILE__);
+
+// Macro for throwing an exception when accessing an empty matrix
+#define MACRO_EMPTYMAT throw std::logic_error("Empty Matrix at line " + to_string(__LINE__) + " in " + __FILE__);
 
 namespace fit
 {
 
+/*!
+ * Utility class for 2D arrays - aka Matrix.
+ * Allow easy access via functions and operator overloading.
+ *
+ * \todo Customize the exceptions with overriden ones.
+ */
 MACRO_TEMPLATED
 class FMatrix : public FObject
 {
     public:
 		// Constructors - Destructor
-			FMatrix(fuint16 height= 0, fuint16 width= 0);
+			FMatrix(const fuint16 height= 0, const fuint16 width= 0, const T& data = T());
 			FMatrix(const FMatrix<T>& other);
 			virtual ~FMatrix();
 
-			std::vector<T>& operator[](fuint16 index);
+			std::vector<T>& operator[](const fuint16 index);
 
-			fuint16 height() const;
-			fuint16 width () const;
+			fuint16 ncol() const;
+			fuint16 nrow() const;
 
-			void dispDebug() const;
-			void init(const T& val);
+            #ifdef DEBUG
+			FString debug() const;
+            #endif
 
 			explicit operator bool() const;
 			bool operator!() const;
 
 			FMatrix<T>& operator=(const FMatrix<T>& other);
 
-			FMatrix<T>& operator+=(const FMatrix&);
-			FMatrix<T>& operator-=(const FMatrix&);
-			FMatrix<T>& operator*=(const FMatrix&);
-			FMatrix<T>& operator*=(double coef);
-			FMatrix<T>& operator/=(double coef);
+			FMatrix<T>& operator+=(const FMatrix& mat);
+			FMatrix<T>& operator-=(const FMatrix& mat);
+			FMatrix<T>& operator*=(const FMatrix& mat);
+			FMatrix<T>& operator*=(const double coef);
+			FMatrix<T>& operator/=(const double coef);
 
 	private:
-        std::vector<std::vector<T> > m_mat; /* 2D Array of any given type */
+        //! 2D array storing the internal matrix
+        std::vector<std::vector<T> > m_mat;
 };
 
-MACRO_TEMPLATED FMatrix<T> operator+(const FMatrix<T>& a, const FMatrix<T>& b);
-MACRO_TEMPLATED FMatrix<T> operator-(const FMatrix<T>& a, const FMatrix<T>& b);
-MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& a, const FMatrix<T>& b);
-MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& a, double coef);
-MACRO_TEMPLATED FMatrix<T> operator/(const FMatrix<T>& a, double coef);
+MACRO_TEMPLATED FMatrix<T> operator+(const FMatrix<T>& mat1, const FMatrix<T>& mat2);
+MACRO_TEMPLATED FMatrix<T> operator-(const FMatrix<T>& mat1, const FMatrix<T>& mat2);
+MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& mat1, const FMatrix<T>& mat2);
+MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& mat,  const double coef);
+MACRO_TEMPLATED FMatrix<T> operator/(const FMatrix<T>& mat,  const double coef);
 
+//! Matrix of Doubles
 typedef FMatrix<double> FDMat;
 
 /*!
- * \brief FMatrix<T>::FMatrix
- * \param col: number of columns of the matrix (default: 0)
- * \param row: number of rows    of the matrix (default: 0)
+ * Base constructor.
+ *
+ * \param col: Number of columns of the matrix (default: 0).
+ * \param row: Number of rows of the matrix (default: 0).
+ * \param data: Piece of data that will fill all cell of the matrix (default: T()).
  */
 MACRO_TEMPLATED
-FMatrix<T>::FMatrix(fuint16 col, fuint16 row)
+FMatrix<T>::FMatrix(const fuint16 col, const fuint16 row, const T& data)
 	: FObject()
 {
-	m_mat.reserve(height);
+	m_mat.reserve(row);
 
-	for(fuint16 i= 0; i< height; i++)
+	for(fuint16 i= 0; i< row; i++)
 	{
 		m_mat.push_back(std::vector<T>());
-		m_mat[i].reserve(width);
+		m_mat[i].reserve(col);
 
-		for(fuint16 j= 0; j< width; j++)
+		for(fuint16 j= 0; j< col; j++)
 		{
-			m_mat[i].push_back(T());
+			m_mat[i].push_back(data);
 		}
 	}
 }
 
 /*!
- * \brief FMatrix<T>::FMatrix deep copy constructor
- * \param other: matrix to copy
+ * Copy constructor.
+ *
+ * \param Matrix to copy from.
  */
 MACRO_TEMPLATED
 FMatrix<T>::FMatrix(const FMatrix<T>& other)
@@ -82,14 +97,17 @@ FMatrix<T>::FMatrix(const FMatrix<T>& other)
 {
 	try
 	{
-		m_mat.reserve(other.height());
+        fuint16 ncol(other.ncol());
+        fuint16 nrow(other.nrow());
 
-		for(fuint16 i= 0; i< other.height(); i++)
+		m_mat.reserve(nrow);
+
+		for(fuint16 i= 0; i< nrow; i++)
 		{
 			m_mat.push_back(std::vector<T>());
-			m_mat[i].reserve(other.width());
+			m_mat[i].reserve(ncol);
 
-			for(fuint16 j= 0; j< other.width(); j++)
+			for(fuint16 j= 0; j< ncol; j++)
 			{
 				m_mat[i].push_back(T(other.m_mat[i][j]));
 			}
@@ -99,7 +117,7 @@ FMatrix<T>::FMatrix(const FMatrix<T>& other)
 }
 
 /*!
- * \brief FMatrix<T>::~FMatrix Destructor
+ * Destructor.
  */
 MACRO_TEMPLATED
 FMatrix<T>::~FMatrix()
@@ -108,9 +126,10 @@ FMatrix<T>::~FMatrix()
 }
 
 /*!
- * \brief FMatrix<T>::operator= Deep assignement
- * \param other: matrix to copy
- * \return Reference to itself (for operation chaining)
+ * Deep assignement operator.
+ *
+ * \param other: FMatrix to assign.
+ * \return Reference to itself.
  */
 MACRO_TEMPLATED FMatrix<T>&
 FMatrix<T>::operator=(const FMatrix<T>& other)
@@ -123,85 +142,81 @@ FMatrix<T>::operator=(const FMatrix<T>& other)
 }
 
 /*!
- * \brief FMatrix<T>::operator[] accessor of a certain index
- * \param index: Col / Row position in the matrix (out of range errors are left to std::vector)
- * \return Row / Col std::vector associated
+ * Row accessor.
+ *
+ * \param index: Row position in the matrix (out of range errors are left to std::vector).
+ * \return Row (std::vector) associated.
  */
 MACRO_TEMPLATED std::vector<T>&
-FMatrix<T>::operator[](fuint16 index)
+FMatrix<T>::operator[](const fuint16 index)
 {
 	return m_mat[index];
 }
 
+#ifdef DEBUG
 /*!
- * \brief FMatrix<T>::dispDebug displays the matrix the "ol' way", without taking care of the actual ui, so only for debug purposes!
+ * Gets a debug string of the FMatrix.
+ *
+ * \return String containing the output.
  */
-MACRO_TEMPLATED void
-FMatrix<T>::dispDebug() const
+MACRO_TEMPLATED FString
+FMatrix<T>::debug() const
 {
-	std::cout << std::endl;
+    std::stringstream ss;
+    using std::endl;
+
+    ss << endl;
 	for(auto row = m_mat.cbegin(); row != m_mat.cend(); row++)
 	{
 		for(auto col = row->cbegin(); col != row->cend(); col++)
 		{
-			std::cout << *col << "\t";
+			ss << *col << "\t";
 		}
-		std::cout << std::endl;
+		ss << endl;
 	}
-
-	std::cout << std::endl;
+	ss << endl;
+    return ss.str();
 }
-
+#endif
 
 /*!
- * \brief FMatrix<T>::init initialise the matrix with a specific value
- * \param val: Value to be set in all matrix
- */
-MACRO_TEMPLATED void
-FMatrix<T>::init(const T& val)
-{
-	for(auto row = m_mat.begin(); row != m_mat.end(); row++)
-	{
-		for(auto col = row->begin(); col != row->end(); col++)
-		{
-			*col = val;
-		}
-	}
-}
-
-/*!
- * \brief FMatrix<T>::height Height accessor
- * \return Height of the matrix
+ * Get the number of rows.
+ *
+ * \return Number of rows of the FMatrix.
  */
 MACRO_TEMPLATED fuint16
-FMatrix<T>::height() const
+FMatrix<T>::nrow() const
 {
-	return m_mat.size();
+    return m_mat.size();
 }
 
 /*!
- * \brief FMatrix<T>::width Width accessor
- * \return Width of the matrix
+ * Get the number of cols.
+ *
+ * \return Number of columns of the FMatrix.
  */
 MACRO_TEMPLATED fuint16
-FMatrix<T>::width () const
+FMatrix<T>::ncol() const
 {
-	return (height() == 0) ? 0 : m_mat[0].size();
+	return (nrow() == 0) ? 0 : m_mat[0].size();
 }
 
 /*!
- * \brief FMatrix<T>::operator bool
- * \return Boolean value: true if the matrix isn't empty, false otherwise
+ * Bool operator.
+ * Use the matrix as a boolean condition depending on it being empty or not.
+ *
+ * \return Boolean value: true if the matrix isn't empty, false otherwise.
  */
 MACRO_TEMPLATED
 FMatrix<T>::operator bool() const
 {
-	return height() != 0 && width() != 0;
+	return nrow() != 0 && ncol() != 0;
 }
 
 /*!
- * \brief FMatrix<T>::operator bool
- * \return Boolean value: false if the matrix isn't empty, true otherwise
+ * Bool operator (Use the matrix as a boolean condition depending on it being empty or not)
+ *
+ * \return True if the matrix is empty, false otherwise.
  */
 MACRO_TEMPLATED bool
 FMatrix<T>::operator!() const
@@ -210,18 +225,19 @@ FMatrix<T>::operator!() const
 }
 
 /*!
- * \brief FMatrix<T>::operator+= Adds the value of one matrix to the corresponding value of another
- * \param m: other matrix
- * \return Reference to itself (for operation chaining)
+ * Adds each values of another FMatrix to this one.
+ *
+ * \param m: Other matrix.
+ * \return Reference to itself.
  */
 MACRO_TEMPLATED FMatrix<T>&
 FMatrix<T>::operator+=(const FMatrix& m)
 {
-	if(*this && m && m.height() == height() && m.width() == width())
+	if(*this && m && m.nrow() == nrow() && m.ncol() == ncol())
 	{
-		for(fuint16 row= 0; row< height(); row++)
+		for(fuint16 row= 0; row< nrow(); row++)
 		{
-			for(fuint16 col= 0; col< width(); col++)
+			for(fuint16 col= 0; col< ncol(); col++)
 			{
 				m_mat[row][col] += m.m_mat[row][col];
 			}
@@ -232,31 +248,23 @@ FMatrix<T>::operator+=(const FMatrix& m)
 }
 
 /*!
- * \brief FMatrix<T>::operator-= Substracts the value of one matrix to the corresponding value of another
- * \param m: other matrix
- * \return Reference to itself (for operation chaining)
+ * Substracts each values of another FMatrix to this one.
+ *
+ * \param m: Other matrix.
+ * \return Reference to itself.
  */
 MACRO_TEMPLATED FMatrix<T>&
 FMatrix<T>::operator-=(const FMatrix& m)
 {
-	if(*this && m && m.height() == height() && m.width() == width())
-	{
-		for(fuint16 row= 0; row< height(); row++)
-		{
-			for(fuint16 col= 0; col< width(); col++)
-			{
-				m_mat[row][col] -= m.m_mat[row][col];
-			}
-		}
-	}
-
-	return *this;
+    return operator+=(m * -1);
 }
 
 /*!
- * \brief FMatrix<T>::operator*= Matricial multiplication
- * \param other: other matrix
+ * Matricial multiplication
+ *
+ * \param other: Other matrix
  * \return Reference to itself (for operation chaining)
+ *
  * \exception Empty Matrix
  * \exception Matrices sizes not matching
  */
@@ -264,18 +272,18 @@ MACRO_TEMPLATED FMatrix<T>&
 FMatrix<T>::operator*=(const FMatrix& other)
 {
 	if(!*this || !other) MACRO_EMPTYMAT;
-	if(width() != other.height()) MACRO_WRONGMATSIZE(width(), other.height());
+	if(ncol() != other.nrow()) MACRO_WRONGMATSIZE(ncol(), other.nrow());
 
 	FMatrix<T> formerThis(*this);
-	*this = FMatrix(formerThis.height(), other.width());
+	*this = FMatrix(formerThis.nrow(), other.ncol());
 
-	for(fuint16 i= 0; i< height(); i++)
+	for(fuint16 i= 0; i< nrow(); i++)
 	{
-		for(fuint16 j= 0; j< width(); j++)
+		for(fuint16 j= 0; j< ncol(); j++)
 		{
 			T sum = 0;
 
-			for(fuint16 k= 0; k< other.height(); k++)
+			for(fuint16 k= 0; k< other.nrow(); k++)
 				sum += formerThis.m_mat[i][k] * other.m_mat[k][j];
 
 			m_mat[i][j] = sum;
@@ -286,16 +294,17 @@ FMatrix<T>::operator*=(const FMatrix& other)
 }
 
 /*!
- * \brief FMatrix<T>::operator*= Coef multiplication
- * \param coef: coefficient to multiply to all elements of the matrix
+ * Coef multiplication
+ *
+ * \param coef: Coefficient to multiply to all elements of the matrix
  * \return Reference to itself (for operation chaining)
  */
 MACRO_TEMPLATED FMatrix<T>&
-FMatrix<T>::operator*=(double coef)
+FMatrix<T>::operator*=(const double coef)
 {
-	for(fuint16 row= 0; row< height(); row++)
+	for(fuint16 row= 0; row< nrow(); row++)
 	{
-		for(fuint16 col= 0; col< width(); col++)
+		for(fuint16 col= 0; col< ncol(); col++)
 		{
 			m_mat[row][col] *= coef;
 		}
@@ -305,16 +314,17 @@ FMatrix<T>::operator*=(double coef)
 }
 
 /*!
- * \brief FMatrix<T>::operator/= Coef division
- * \param coef: coefficient to divise to all elements of the matrix
+ * Coef division
+ *
+ * \param coef: Coefficient to divise to all elements of the matrix
  * \return Reference to itself (for operation chaining)
  */
 MACRO_TEMPLATED FMatrix<T>&
-FMatrix<T>::operator/=(double coef)
+FMatrix<T>::operator/=(const double coef)
 {
-	for(fuint16 row= 0; row< height(); row++)
+	for(fuint16 row= 0; row< nrow(); row++)
 	{
-		for(fuint16 col= 0; col< width(); col++)
+		for(fuint16 col= 0; col< ncol(); col++)
 		{
 			m_mat[row][col] /= coef;
 		}
@@ -324,63 +334,67 @@ FMatrix<T>::operator/=(double coef)
 }
 
 /*!
- * \brief FMatrix<T>::operator+ Addition operator
- * \param a: Left operand
- * \param b: Right operand
+ * Addition operator
+ *
+ * \param mat1: Left operand
+ * \param mat2: Right operand
  * \return Matrix resulting
  */
 MACRO_TEMPLATED FMatrix<T>
-operator+(const FMatrix<T>& a, const FMatrix<T>& b)
+operator+(const FMatrix<T>& mat1, const FMatrix<T>& mat2)
 {
-	return FMatrix<T>(a) += b;
+	return FMatrix<T>(mat1) += mat2;
 }
 
 /*!
- * \brief FMatrix<T>::operator- Substraction operator
- * \param a: Left operand
- * \param b: Right operand
+ * Substraction operator
+ *
+ * \param mat1: Left operand
+ * \param mat2: Right operand
  * \return Matrix resulting
  */
 MACRO_TEMPLATED FMatrix<T>
-operator-(const FMatrix<T>& a, const FMatrix<T>& b)
+operator-(const FMatrix<T>& mat1, const FMatrix<T>& mat2)
 {
-	return FMatrix<T>(a) -= b;
+	return FMatrix<T>(mat1) -= mat2;
 }
 
 /*!
- * \brief FMatrix<T>::operator* Matricial multiplication operator
- * \param a: Left operand
- * \param b: Right operand
+ * Matricial multiplication operator
+ * \param mat1: Left operand
+ * \param mat2: Right operand
  * \return Matrix resulting
  */
 MACRO_TEMPLATED FMatrix<T>
-operator*(const FMatrix<T>& a, const FMatrix<T>& b)
+operator*(const FMatrix<T>& mat1, const FMatrix<T>& mat2)
 {
-	return FMatrix<T>(a) *= b;
+	return FMatrix<T>(mat1) *= mat2;
 }
 
 /*!
- * \brief FMatrix<T>::operator- Multiplication by an coefficient operator
- * \param a: Left operand
- * \param b: Right operand
+ * Multiplication by an coefficient operator
+ *
+ * \param mat: Left operand
+ * \param coef: Right operand
  * \return Matrix resulting
  */
 MACRO_TEMPLATED FMatrix<T>
-operator*(const FMatrix<T>& a, double coef)
+operator*(const FMatrix<T>& mat, const double coef)
 {
-	return FMatrix<T>(a) *= coef;
+	return FMatrix<T>(mat) *= coef;
 }
 
 /*!
- * \brief FMatrix<T>::operator- Division by an coefficient operator
- * \param a: Left operand
- * \param b: Right operand
+ * Division by an coefficient operator
+ *
+ * \param mat: Left operand
+ * \param coef: Right operand
  * \return Matrix resulting
  */
 MACRO_TEMPLATED FMatrix<T>
-operator/(const FMatrix<T>& a, double coef)
+operator/(const FMatrix<T>& mat, double coef)
 {
-	return FMatrix<T>(a) /= coef;
+	return FMatrix<T>(mat) /= coef;
 }
 
 } // Namespace fit

@@ -3,13 +3,10 @@
 namespace fit
 {
 
-/*!
- * \brief FObject::nextID keeps unique identifier of all object deriving from the FObject class
- */
 fuint32 FObject::nextID = 0;
 
 /*!
- * \brief FObject::FObject Default constructor
+ * Base constructor.
  */
 FObject::FObject()
 	: m_id(nextID)
@@ -18,7 +15,7 @@ FObject::FObject()
 }
 
 /*!
- * \brief FObject::~FObject Destructor
+ * Destructor.
  */
 FObject::~FObject()
 {
@@ -27,9 +24,8 @@ FObject::~FObject()
 
 /**
  * Get the debug info about an object (if possible in all classes) coming from java.
- * Je suis une description
  *
- * \return String containing useful informations about the object (recursively calls his parents)
+ * \return String containing useful informations about the object (meant to recursively call his parents)
  */
 FString FObject::toString() const
 {

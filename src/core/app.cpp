@@ -3,26 +3,33 @@
 namespace fit
 {
 
+FLog App::log = FLog(FLog::LogLevel::Debug);
+
 /*!
- * App Default Constructor, launches the ui and input thread to start the application
- * \param Number of arguments in command line (1st one is the command name itself)
- * \param Array of strings to those arguments
+ * App Default Constructor, launches the ui and input thread to start the application.
+ *
+ * \param argn: Number of arguments in command line (1st one is the command name itself)
+ * \param argv: Array of strings to those arguments
  */
-App::App(int argn, char* argv[])
+App::App(const fuint16 argn, char* argv[])
     :	FObject(),
         m_inputHandling(), m_stopInputThread(new bool(false)),
         m_ui(), m_stopUIThread(new bool(false)),
         m_state(0),
-        m_argn(argn), m_argv(argv)
+        m_argn(argn)
 {
     setBlockingInput(false);
     //m_inputThread = std::thread(m_inputHandling.run, m_stopInputThread);
     //m_UIThread = std::thread(m_ui.run, m_stopUIThread);
+
+    // argv handling
+    //m_argv(FStringList(argv));
 }
 
 /*!
- * App Special Constructor
- * \param Identifier of the easter egg
+ * App Special Constructor.
+ *
+ * \param eEgg: Identifier of the easter egg
  */
 App::App(const EasterEgg& eEgg)
     :	App()
@@ -40,7 +47,7 @@ App::App(const EasterEgg& eEgg)
 }
 
 /*!
- * \brief Desctructor
+ * Desctructor
  */
 App::~App()
 {
@@ -63,8 +70,9 @@ App::~App()
 }
 
 /*!
- * Toggles having to hit enter to input data
- * \param Enable or disable it
+ * Toggles having to hit enter to input data.
+ *
+ * \param enable: Enable or disable it.
  */
 void App::setBlockingInput(bool enable)
 {
@@ -93,8 +101,9 @@ void App::setBlockingInput(bool enable)
 }
 
 /*!
- * Getter to the ui
- * \return A reference to the ui used by the application to work directly on it
+ * Getter to the ui.
+ *
+ * \return A reference to the ui used by the application to work directly on it.
  */
 UI& App::ui() { return m_ui; }
 
@@ -115,14 +124,16 @@ void App::delEvent(fuint32 id)
 }
 
 /*!
- * State getter
- * \return Current application state
+ * State getter.
+ *
+ * \return Current application state.
  */
 int App::state() const { return m_state; }
 
 /*!
- * State setter
- * \param Value to set
+ * State setter.
+ *
+ * \param state: Value to set.
  */
 void App::setState(int state) { m_state = state; }
 

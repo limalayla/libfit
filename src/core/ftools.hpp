@@ -1,6 +1,7 @@
 #ifndef FTOOLS_HPP
 #define FTOOLS_HPP
 
+#include "app.hpp"
 #include "fobject.hpp"
 
 namespace fit
@@ -57,7 +58,7 @@ class FTools : public FObject
             return res;
         }
 
-};
+}; // Class FTools
 
 FString toUpper(const FString& str);
 FString trim(const FString& str);

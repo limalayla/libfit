@@ -12,16 +12,14 @@ int main(int argn, char* argv[])
     ll.push(5);
     ll.display();
 
-    ll.insert(6, 2);
-    ll.display();
-    ll.insert(7, 0);
-    ll.display();
+    // ll.insert(6, 2);
+    // ll.display();
+    // ll.insert(7, 0);
+    // ll.display();
 
     std::cout << ll[0] << std::endl;
     std::cout << ll[1] << std::endl;
     std::cout << ll[2] << std::endl;
     std::cout << ll[3] << std::endl;
     std::cout << ll[4] << std::endl;
-    std::cout << ll[5] << std::endl;
-    std::cout << ll[6] << std::endl;
 }

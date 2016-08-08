@@ -5,16 +5,32 @@
 
 namespace fit {
 
+/*!
+ * Classic data storing structure.
+ * Hierarchical linked list.
+ *
+ * \todo Copy-Move constructor / way of using it
+ */
 TEMPLATE_NODE
 class FTree : public FObject
 {
     public:
-        FTree(const FNode<DataType>& head = FNode<DataType>::Head)
+        /*!
+         * Base Constructor - node version.
+         *
+         * \param head: Node that will be on the top level.
+         */
+        FTree(const FNode<DataType>& head)
             :   m_head(head), m_nelem(1)
         {
 
         }
 
+        /*!
+         * Base Constructor - Data version.
+         *
+         * \param head: Data that will be on the top level.
+         */
         FTree(const DataType& headData)
             : FTree(FNode<DataType>(headData))
         {
@@ -22,8 +38,12 @@ class FTree : public FObject
         }
 
     private:
+        //! Top Level Node
         FNode<DataType> m_head;
+
+        //! Number of elements in the tree
         fuint32 m_nelem;
+
 }; // Class Ftree
 
 } // Namespace fit

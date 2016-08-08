@@ -7,12 +7,11 @@ namespace fit
 {
 
 /*!
- * \brief FThreadable Interface for all objects that can be runned into threads
+ * Interface for all classes that can be runned into threads
  */
 class FThreadable : virtual public FObject
 {
     public:
-		// Constructors - Destructor
         FThreadable();
         virtual ~FThreadable();
         
@@ -22,4 +21,3 @@ class FThreadable : virtual public FObject
 }
 
 #endif // FTHREADABLE_COMPILED
-

@@ -91,14 +91,20 @@ sudo make install # To build then install the library and headers in the right p
 ```
 
 
+## Documentation
+Documentation is done with doxygen. In order to generate the documentation, just place yourself in the library's root directory, and execute `doxygen`. Documentation will be generated in the `doc/` directory.
+
+
 ###### New:
-* Documentation : Doxygen file created
-* Misc.: Made the patterns const
+* Documentation of every core classes
+* Renamed height and width into row and col in fmatrix.hpp
+* Implemented Strings List and used it in App
+* Lots and lots of code cleaning
 
 
 ###### Previous:
-* Implemented logs
-* Moved headers
+* Documentation : Doxygen file created
+* Misc.: Made the patterns const
 
 
 ###### ToDo:
@@ -109,6 +115,7 @@ sudo make install # To build then install the library and headers in the right p
        Lists
 * Implement Trees
 * Documentation with doxygen
+* Inherit exception classes
 
 
 ###### Bugs:

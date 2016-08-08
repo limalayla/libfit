@@ -7,19 +7,23 @@ namespace fit
 {
 
 /*!
- * \brief The FRect class holds a composition of 4 points
+ * Class holding a composition of 4 points.
+ * Inherit FVec2 for the starting point, then the 3 others are obtainable with height and width.
+ *
+ * \todo Templated?
  */
 class FRect : public FVec2<fuint16>
 {
     public:
-		// Constructors - Destructor
         FRect(fuint16 _x= 0, fuint16 _y= 0, fuint16 _height= 0, fuint16 _width= 0);
         FRect(const FRect& other);
         virtual ~FRect();
 
-        fuint16 height; /* Height of the rectangle */
-        fuint16 width ; /* Width  of the rectangle */
-		
+        //! Width of the rectangle
+        fuint16 height;
+        //! Width of the rectangle
+        fuint16 width;
+
         FString toString() const override;
 };
 

@@ -1,24 +1,26 @@
-#ifndef APP_COMPILED
-#define APP_COMPILED
+#ifndef APP_HPP
+#define APP_HPP
 
 #include <thread>
 #include <termios.h>
 #include "../ui/ui.hpp"
 #include "fevent.hpp"
 #include "../ui/finputhandler.hpp"
+#include "flog.hpp"
+#include "fstringlist.hpp"
 
 namespace fit
 {
 
 /*!
- * Class holding all infos and threads for the program to run on
+ * Class holding all infos and threads for the program to run on.
  */
 class App : public FObject
 {
     public:
 
         /*!
-         * Enum used to implement easter eggs easily
+         * Enum used to implement easter eggs easily.
          */
         enum class EasterEgg
         {
@@ -26,7 +28,7 @@ class App : public FObject
         };
 
         // Constructors - Destructor
-        App(int argn= 0, char* argv[]= nullptr);
+        App(const fuint16 argn= 0, char* argv[]= nullptr);
         App(const EasterEgg& eEgg);
         virtual ~App();
 
@@ -38,25 +40,45 @@ class App : public FObject
         int  state() const;
         void setState(int state);
 
+        //! Static FLog used with the lib's logs.
+        static FLog log;
+
 	private:
         // Input Handling
-        FInputHandler m_inputHandling;              /* Object meant to create and manage events related to all inputs (keyboard etc) */
-        bool*         m_stopInputThread;            /* Boolean shared with the thread, stopping it when needed */
-        std::thread   m_inputThread;                /* Thread meant to run along with the app, checking all inputs (keyboard etc) */
+            //! Object meant to manage events related to input (keyboard etc). Reffer to the FInputHandler doc for further information.
+            FInputHandler m_inputHandling;
+
+            //! Boolean controlling the thread interuption.
+            bool* m_stopInputThread;
+
+            //! Thread checking the inputs alongside the app.
+            std::thread m_inputThread;
 
 		// UI Handling
-        UI            m_ui;                         /* Object managing the ui: contains it, refresh it, holds the widgets */
-        bool*         m_stopUIThread;               /* Boolean shared with the thread, stopping it when needed */
-        std::thread   m_UIThread;                   /* Thread meant to run along with the app, updating the ui when needed */
+            //! UI Object: Holds widget, refresh ui etc. Reffer to the UI doc for further information.
+            UI m_ui;
 
-        static std::map<FString, FEvent> m_events;  /* All event of the app */
+            //! Boolean controlling the thread interuption.
+            bool* m_stopUIThread;
+
+            //! Thread running the UI alongside the app.
+            std::thread m_UIThread;
+
+        //! All event of the app.
+        static std::map<FString, FEvent> m_events;
 
         // Links to the os
-        int           m_state;                      /* State of the app, meant to be returned at the end of the program */
-        int           m_argn;                       /* Number of arguments in command line (1st one is the command name itself) */
-        char**        m_argv;                       /* Array of strings to those arguments */
-};
+            //! State of the app (Equivalent to the main's return value).
+            int m_state;
 
-}
+            //! Number of arguments of the command line (1st one being the command itself).
+            fuint8 m_argn;
 
-#endif // APP_COMPILED
+            //! Array of strings to those arguments.
+            FStringList m_argv;
+
+}; // Class App
+
+} // Namespace fit
+
+#endif // APP_HPP

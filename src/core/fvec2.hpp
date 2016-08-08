@@ -5,25 +5,20 @@
 
 namespace fit
 {
-	
-	/*
-	 *	Disclaimer: Implementation in .h (or .hpp) is dirty,
-	 *  but is apparently the "best" way to do it. Meh. 
-	 * 
-	*/
-
 /*!
- *  FVec2 is a class holding a couple of a certain value
+ *  Class holding a couple of a any value.
  */
 MACRO_TEMPLATED
 class FVec2 : public FObject
 {
     public:
-		// Constructors - Destructor
         /*!
-         * \brief FVec2 Default constructor
-         * \param _x: 1st value of the couple
-         * \param _y: 2nd value of the couple
+         * Base constructor.
+		 *
+         * \param _x: 1st value of the couple.
+         * \param _y: 2nd value of the couple.
+		 *
+		 * \todo Find a way not to decrement x and y (certainly coming from FWidget)
          */
         FVec2(T _x= 0, T _y= 0)
 			: FObject(), x(_x), y(_y)
@@ -31,37 +26,45 @@ class FVec2 : public FObject
 			if(x != 0) x--;
 			if(y != 0) y--;
 		}
-		
+
         /*!
-         * \brief FVec2 Deep copy constructor
-         * \param other: Vector to copy
+         * Copy constructor.
+		 *
+         * \param other: Vector to copy.
          */
 		FVec2(const FVec2& other)
 			: FObject(other), x(other.x), y(other.y)
 		{}
-		
+
         /*!
-         * \brief ~FVec2 Destructor
+         * Destructor.
          */
         virtual ~FVec2()
-        {}
-        
+        {
+
+		}
+
         /*!
-         * \brief toString Overriding of FObject::toString()
-         * \return FString containing a description of the object
+         * Override of FObject::toString().
+		 *
+         * \return FString containing a description of the object.
          */
         FString toString() const override
         {
 			std::stringstream res;
 			res << "FVec2 {x= " << x << ", y= " << y << ", " << FObject::toString() << "}";
-			
+
 			return res.str();
 		}
 
-        T x;    /* 1st value of the couple */
-        T y;    /* 2nd value of the couple */
-};
+		//! First value of the couple.
+        T x;
 
-}
+		//! Second value of the couple.
+        T y;
+
+}; // Class FVec2
+
+} // Namespace fit
 
 #endif //FVEC2_COMPILED

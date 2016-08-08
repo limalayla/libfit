@@ -1,7 +1,7 @@
-#ifndef FPATTERN_COMPILED
-#define FPATTERN_COMPILED
+#ifndef FPATTERN_HPP
+#define FPATTERN_HPP
 
-#include "../core/ftools.hpp"
+#include "../core/fobject.hpp"
 
 namespace fit
 {
@@ -63,4 +63,4 @@ class FPattern : public FObject
 
 }
 
-#endif // FPATTERN_COMPILED
+#endif // FPATTERN_HPP

@@ -4,17 +4,16 @@ namespace fit
 {
 
 /*!
- * \brief FThreadable::FThreadable Default Constructor (useless?)
+ * Base Constructor
  */
 FThreadable::FThreadable()
 	: FObject()
 {}
 
 /*!
- * \brief FThreadable::~FThreadable Destructor
+ * Destructor
  */
 FThreadable::~FThreadable()
 {}
 
 }
-

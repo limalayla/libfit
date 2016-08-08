@@ -1,5 +1,5 @@
-#ifndef FEVENT_COMPILED
-#define FEVENT_COMPILED
+#ifndef FEVENT_HPP
+#define FEVENT_HPP
 
 #include "fobject.hpp"
 
@@ -8,6 +8,7 @@ namespace fit
 
 /*!
  * Class representing any kind of evenement, along with some options (eg: keyPressed - keyID)
+ *
  * \todo Find a way of working (only that… *sigh*)
  */
 class FEvent : public FObject
@@ -24,8 +25,9 @@ class FEvent : public FObject
         //std::condition_variable m_cv;
         fuint16 m_type;
         void*   m_arg;      /* Options passed along with the event */
-};
 
-}
+}; // Class FEvent
 
-#endif // FEVENT_COMPILED
+} // Namespace fit
+
+#endif // FEVENT_HPP

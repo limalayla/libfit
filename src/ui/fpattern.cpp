@@ -1,4 +1,5 @@
 #include "fpattern.hpp"
+#include "../core/ftools.hpp"
 
 namespace fit
 {

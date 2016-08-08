@@ -1,22 +1,23 @@
 #ifndef FNODE_HPP
 #define FNODE_HPP
 
-#include "fobject.hpp"
+#include "app.hpp"
 
 namespace fit {
 
 #define TEMPLATE_NODE template<typename DataType>
+
 /*!
- * \brief Element of a Linked List (FLinkList)
+ * Element of a Linked List (FLinkList)
  */
 TEMPLATE_NODE
 class FNode : public FObject
 {
     /* Members */
     protected:
-        //! Data hold by the node
+        //! Data held by the node
         DataType m_data;
-        
+
         //! Pointer to the next node
         FNode<DataType>* m_child;
 
@@ -25,107 +26,117 @@ class FNode : public FObject
         /*!
          * Default Constructor
          *
-         * @param data  Data filling the head node
-         * @param child Optional pointer to the next child
+         * \param data: Data filling the head node
+         * \param child: Optional pointer to the next child (default: nullptr)
          *
          */
         FNode(const DataType& data, FNode<DataType>* child = nullptr)
             : m_data(DataType(data)), m_child(child)
         {
-                #ifdef DEBUG
-                std::cout << "Creating " << m_id << std::endl;
-                #endif
+            App::log.d() << "Creating " << m_id;
         }
 
         /*!
          * Copy Constructor
          *
-         * @param other Other FNode to be copied
-         *
+         * \param other: Other FNode to copy
          */
         FNode(const FNode<DataType>& other)
             : m_data(DataType(other.m_data))
         {
-                #ifdef DEBUG
-            std::cout << "Copying from " << other.m_id << " to " << m_id << std::endl;
-                #endif
+            App::log.d() << "Copying from " << other.m_id << " to " << m_id;
             m_child = other.isLeaf() ? nullptr : new FNode<DataType>(*other.m_child);
         }
 
         /*!
          * Move Constructor
          *
-         * @param other Other FNode to be moved
-         *
+         * \param other: Other FNode to move
          */
         FNode(const FNode<DataType>&& other)
-            : m_data(std::move(other.m_data))
+            : m_data(std::move(other.m_data)), m_child(other.m_child)
         {
-            std::cout << "Moving from " << other.m_id << " to " << m_id << std::endl;
-            m_child = other.isLeaf() ? nullptr : other.m_child;
+            App::log.d() << "Moving from " << other.m_id << " to " << m_id;
+            m_child = other.m_child;
             other.m_child = nullptr;
         }
 
         /*!
-         * Destructor
+         * Destructor.
          * Recursively deletes all nodes
-         *
          */
-        ~FNode()
+        virtual ~FNode()
         {
-            std::cout << "Deleting " << m_id << std::endl;
+            App::log.d() << "Deleting " << m_id;
+
             if(!isLeaf())
                 delete m_child;
         }
 
-
+        /*!
+         * Checks if the node have a children
+         *
+         * \return False if have a child, true otherwise
+         */
         bool isLeaf() const
         {
             return m_child == nullptr;
         }
 
-        /**
-            Write description of function here.
-            The function should follow these comments.
-            Use of "brief" tag is optional. (no point to it)
-
-            The function arguments listed with "param" will be compared
-            to the declaration and verified.
-
-            @param[in]     child Description of first function argument.
-            @return Description of returned value.
+        /*!
+         * Add a child to the node.
+         * Works if the node's child is null, or if the child to set is null
+         *
+         * \param child: Pointer to FNode to add to self
+         * \return Reference to itself
         */
         FNode<DataType>& setChild(FNode<DataType>* child)
         {
-            std::cout << "setchild" << std::endl;
-            if(!isLeaf() && false) /* Not sure that's useful */
-                #ifdef DEBUG
-                throw std::runtime_error(FString("Tried adding a child to a node that already have one (this= ")
-                                         + std::to_string(this->getData()) + FString(", child= ")
-                                         + std::to_string(child->getData()) + FString(")"));
-                #else
-                throw std::runtime_error("Tried adding a child to a node that already have one");
-                #endif
+            if(m_child != nullptr && child != nullptr)
+                App::log.d() << "Replaced a child with another one (this= "
+                             << this->getData() << ", child= " << child->getData() << ")";
 
             m_child = child;
             return *this;
         }
 
+        /*!
+         * Add a child to the node.
+         *
+         * \param child: FNode to add to self
+         * \return Reference to itself
+        */
         FNode<DataType>& setChild(const FNode<DataType>& child)
         {
             return setChild(&child);
         }
 
+        /*!
+         * Get the child of the node.
+         *
+         * \param child: Pointer to FNode to add to self
+         * \return Reference to itself
+        */
         FNode<DataType>* getChild() const
         {
             return m_child;
         }
 
+        /*!
+         * Get the number of childs.
+         *
+         * \return Number of childs of the node
+        */
         fuint32 nchild() const
         {
-            return isLeaf() ? 1 : m_child->nchild()+1;
+            return isLeaf() ? 0 : m_child->nchild() + 1;
         }
 
+        /*!
+         * Get the data contained in the node.
+         *
+         * \return Reference to the Data
+        */
         DataType& getData()
         {
             return m_data;

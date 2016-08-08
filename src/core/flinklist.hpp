@@ -14,17 +14,18 @@ class FLinkList : public FObject
 {
     /* Members */
     protected:
-        //! Head Node
+        //! Head Node.
         FNode<DataType>* m_head;
 
-        //! Total number of elements
+        //! Total number of elements.
         fuint32 m_nelem;
 
     /* Methods */
     public:
         /*!
-         * Default constructor - Node version
-         * \param Pointer to the head node
+         * Default constructor - Node version.
+         *
+         * \param head: Pointer to the head node.
          */
         FLinkList(FNode<DataType>* head)
             : m_head(head), m_nelem(1 + head->nchild())
@@ -33,8 +34,9 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Default constructor - Data version
-         * \param First data of the linked list
+         * Default constructor - Data version.
+         *
+         * \param headData: First data of the linked list.
          */
         FLinkList(const DataType& headData)
             : FLinkList(new FNode<DataType>(headData))
@@ -43,8 +45,9 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Copy constructor
-         * \param Linked List to be copied
+         * Copy constructor.
+         *
+         * \param other: FLinkList to copy.
          */
         FLinkList(const FLinkList<DataType>& other)
             : m_head(new FNode<DataType>(m_head)), m_nelem(other.m_nelem)
@@ -53,8 +56,9 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Move constructor
-         * \param Linked List to be moved
+         * Move constructor.
+         *
+         * \param other: FLinkList to move.
          */
         FLinkList(const FLinkList<DataType>&& other)
             : m_head(other.m_head), m_nelem(other.m_nelem)
@@ -63,23 +67,27 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Destructor
+         * Destructor.
          */
-        ~FLinkList()
+        virtual ~FLinkList()
         {
             if(m_head != nullptr)
                 delete m_head;
         }
 
         /*!
-         * Inserts an element to the Linked List, at the specified position
-         * \param Data to insert
-         * \param Position at which the data is inserted, going from 0 to N-1
-         * \return Reference to the updated Linked List
+         * Inserts an element to the Linked List, at the specified position.
+         *
+         * \param data: Data to insert.
+         * \param pos: Position at which the data is inserted, going from 0 to N-1.
+         * \return Reference to itself.
          */
         FLinkList& insert(const DataType& data, fuint32 pos)
         {
+            // Limit the insertion pos to the end of the linked list
             pos = std::min(pos, m_nelem);
+
+            // Create the node to insert
             FNode<DataType>* newNode = new FNode<DataType>(data);
 
             if(pos == 0)
@@ -91,9 +99,16 @@ class FLinkList : public FObject
             {
                 FNode<DataType>* curNode = m_head;
 
+                // Travel to the insertion point
                 for(fuint32 i= 1; i< pos; i++)
-                    curNode = curNode->getChild();
+                {
+                    if(curNode != nullptr)
+                        curNode = curNode->getChild();
+                    else
+                        App::log.w() << "m_nelem doesn't match the node count (" << i << ")";
+                }
 
+                // Insert
                 newNode->setChild(curNode->getChild());
                 curNode->setChild(newNode);
             }
@@ -103,9 +118,10 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Insert data at the end of the Linked List
-         * \param Data to insert
-         * \return Reference to the updated Linked List
+         * Insert data at the end of the linked list.
+         *
+         * \param data: Data to insert.
+         * \return Reference to itself.
          */
         FLinkList& push(const DataType& data)
         {
@@ -113,14 +129,14 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Outputs the Linked List
+         * Outputs the Linked List (Debug purposes).
          */
         void display() const
         {
             using namespace std;
             FNode<DataType>* curNode = m_head;
 
-            cout << "LinkList (" << m_nelem << ")" << endl;
+            cout << endl <<  "LinkList (" << m_nelem << ")" << endl;
 
             while(curNode != nullptr)
             {
@@ -138,9 +154,10 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Node Getter
-         * \param Position of the node to get (range checked)
-         * \return Reference to the node
+         * Node Getter.
+         *
+         * \param index: Position of the node to get (range checked).
+         * \return Reference to the node.
          */
         FNode<DataType>& operator()(fuint32 index)
         {
@@ -159,16 +176,18 @@ class FLinkList : public FObject
         }
 
         /*!
-         * Data Getter
-         * \param Position of the data to get (range checked)
-         * \return Reference to the data
+         * Data Getter.
+         *
+         * \param index: Position of the data to get (range checked).
+         * \return Reference to the data.
          */
         DataType& operator[](fuint32 index)
         {
             return (*this)(index).getData();
         }
-};
+
+}; // Class FLinkList
 
 } // Namespace fit
 
-#endif // FNODE_HPP
+#endif // FLINKLIST_HPP

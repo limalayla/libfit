@@ -1,5 +1,5 @@
-#ifndef FWIDGET_COMPILED
-#define FWIDGET_COMPILED
+#ifndef FWIDGET_HPP
+#define FWIDGET_HPP
 
 #include "../core/frect.hpp"
 #include "fpattern.hpp"
@@ -68,8 +68,9 @@ class FWidget : public FRect
 		const FPattern& m_pattern;
 
 		virtual void createGrid();
-};
 
-}
+}; // CLass FWidget
 
-#endif //FWIDGET_COMPILED
+} // Namespace fit
+
+#endif //FWIDGET_HPP
