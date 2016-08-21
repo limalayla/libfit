@@ -2,6 +2,7 @@
 #define FSTRINGLIST_HPP
 
 #include "fobject.hpp"
+#include <fstream>
 
 namespace fit
 {
@@ -24,6 +25,7 @@ namespace fit
             FStringList(      char** strings);
             FStringList(const FString& string);
             FStringList(const char* string);
+            FStringList(std::ifstream& file);
             virtual ~FStringList();
 
             FStringList& add(const FString& string, fuint32 pos);

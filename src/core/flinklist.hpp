@@ -105,7 +105,7 @@ class FLinkList : public FObject
                     if(curNode != nullptr)
                         curNode = curNode->getChild();
                     else
-                        App::log.w() << "m_nelem doesn't match the node count (" << i << ")";
+                        FLog::dev.w() << "m_nelem doesn't match the node count (" << i << ")";
                 }
 
                 // Insert

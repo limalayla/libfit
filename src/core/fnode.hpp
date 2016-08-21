@@ -33,7 +33,7 @@ class FNode : public FObject
         FNode(const DataType& data, FNode<DataType>* child = nullptr)
             : m_data(DataType(data)), m_child(child)
         {
-            App::log.d() << "Creating " << m_id;
+            FLog::dev.d() << "Creating " << m_id;
         }
 
         /*!
@@ -44,7 +44,7 @@ class FNode : public FObject
         FNode(const FNode<DataType>& other)
             : m_data(DataType(other.m_data))
         {
-            App::log.d() << "Copying from " << other.m_id << " to " << m_id;
+            FLog::dev.d() << "Copying from " << other.m_id << " to " << m_id;
             m_child = other.isLeaf() ? nullptr : new FNode<DataType>(*other.m_child);
         }
 
@@ -56,7 +56,7 @@ class FNode : public FObject
         FNode(const FNode<DataType>&& other)
             : m_data(std::move(other.m_data)), m_child(other.m_child)
         {
-            App::log.d() << "Moving from " << other.m_id << " to " << m_id;
+            FLog::dev.d() << "Moving from " << other.m_id << " to " << m_id;
             m_child = other.m_child;
             other.m_child = nullptr;
         }
@@ -67,7 +67,7 @@ class FNode : public FObject
          */
         virtual ~FNode()
         {
-            App::log.d() << "Deleting " << m_id;
+            FLog::dev.d() << "Deleting " << m_id;
 
             if(!isLeaf())
                 delete m_child;
@@ -93,8 +93,8 @@ class FNode : public FObject
         FNode<DataType>& setChild(FNode<DataType>* child)
         {
             if(m_child != nullptr && child != nullptr)
-                App::log.d() << "Replaced a child with another one (this= "
-                             << this->getData() << ", child= " << child->getData() << ")";
+                FLog::dev.d() << "Replaced a child with another one (this= "
+                              << this->getData() << ", child= " << child->getData() << ")";
 
             m_child = child;
             return *this;

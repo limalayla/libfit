@@ -10,5 +10,5 @@ int main(int argn, char* argv[])
     log.d() << "Debug";
     log.i() << "Info";
     log.w() << "Warning";
-    log.e() << "Error";
+    log.e() << "Error: " << 6;
 }

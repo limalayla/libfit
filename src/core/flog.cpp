@@ -8,6 +8,12 @@ const std::vector<FString> FLog::m_levels = {   "DEBUG",
                                                 "ERROR"
 };
 
+#ifdef DEBUG
+    FLog FLog::dev = FLog(FLog::LogLevel::Debug);
+#else
+    FLog FLog::dev = FLog(FLog::LogLevel::Warn);
+#endif
+
 /*!
  * Base constructor.
  *
@@ -29,7 +35,7 @@ FLog::FLog(const FLog::LogLevel level, std::ostream& os)
  */
 FLog::FLog(const FLog& other)
     :   m_time(other.m_time),
-        m_os(*(&other.m_os)),
+        m_os(*(&other.m_os)), // Eh, wat?
         m_dummyOs(nullptr),
         m_minLevel(LogLevel::Debug/*other.m_minLevel*/)
 {

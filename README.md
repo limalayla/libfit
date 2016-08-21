@@ -96,15 +96,16 @@ Documentation is done with doxygen. In order to generate the documentation, just
 
 
 ###### New:
+* Bug fix with cmake install which named libfit "liblibfit.so"
+* Moved the lib's static log out of the App class to the Log one
+* FStringList from file constructor
+
+
+###### Previous:
 * Documentation of every core classes
 * Renamed height and width into row and col in fmatrix.hpp
 * Implemented Strings List and used it in App
 * Lots and lots of code cleaning
-
-
-###### Previous:
-* Documentation : Doxygen file created
-* Misc.: Made the patterns const
 
 
 ###### ToDo:

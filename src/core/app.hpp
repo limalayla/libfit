@@ -40,9 +40,6 @@ class App : public FObject
         int  state() const;
         void setState(int state);
 
-        //! Static FLog used with the lib's logs.
-        static FLog log;
-
 	private:
         // Input Handling
             //! Object meant to manage events related to input (keyboard etc). Reffer to the FInputHandler doc for further information.

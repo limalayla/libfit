@@ -7,8 +7,8 @@ namespace fit {
 
 /*!
  * Logging utility class.
- * Not an optimal one since it will still create the message content client-side, even if the level is too low,
- *  in opposition to macro-based ones.
+ * Not an optimal one since it will still create the message content even if the level is too low,
+ *  as opposed to macro-based ones.
  */
 class FLog : public FObject
 {
@@ -22,6 +22,9 @@ class FLog : public FObject
             Error,
             None
         };
+
+        //! Static FLog used with the lib's logs.
+        static FLog dev;
 
     protected:
         /* Time related members (used in the format function) */

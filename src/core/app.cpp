@@ -3,8 +3,6 @@
 namespace fit
 {
 
-FLog App::log = FLog(FLog::LogLevel::Debug);
-
 /*!
  * App Default Constructor, launches the ui and input thread to start the application.
  *

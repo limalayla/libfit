@@ -10,7 +10,9 @@ int main(int argn, char* argv[])
     FStringList strList(argv);
     log.i() << std::endl << strList.debug();
 
-    strList.add("yolo", strList.size());
+    strList.add("test1", strList.size());
+    strList.add("test2", strList.size());
+    strList.add("test3", strList.size());
     log.i() << std::endl << strList.debug();
 
     strList.del(2);
@@ -18,5 +20,7 @@ int main(int argn, char* argv[])
 
 
     log.i() << std::endl << strList.get(1, 3).debug();
-    log.i() << strList.get(2);
+    log.i() << strList.get(2) << " " << strList[2];
+
+    return 0;
 }

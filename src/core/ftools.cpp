@@ -20,8 +20,6 @@ FString toUpper(const FString& str)
         if(std::isalpha(str[i]))
             res[i] = std::toupper(str[i]);
 
-     App::log.d() << str << " " << res;
-
     return res;
 }
 
@@ -31,8 +29,7 @@ FString trim(const FString& str)
 
     size_t first = res.find_first_not_of(' ');
     size_t last = res.find_last_not_of(' ');
-
-    App::log.d()  << str << " " << res;
+    
     return res.substr(first, (last-first+1));
 }
 

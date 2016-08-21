@@ -8,14 +8,14 @@ file (GLOB libfit_header
         "core/*.hpp"
 )
 
-add_library (libfit SHARED ${libfit_src} ${libfit_header})
+add_library (fit SHARED ${libfit_src} ${libfit_header})
 
-set_target_properties (libfit
+set_target_properties (fit
                        PROPERTIES
                        VERSION ${libfit_version}
 )
 
-INSTALL (TARGETS libfit
+INSTALL (TARGETS fit
          DESTINATION lib
          PERMISSIONS OWNER_READ GROUP_READ WORLD_READ
 )
