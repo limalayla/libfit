@@ -5,7 +5,9 @@ It is far from finished, but here is an overview of the current look and target 
 
 
 ```c++
-#include <libfit/all>
+#include "../src/core/app.hpp"
+#include "../src/ui/flabel.hpp"
+//#include <libfit/all>
 
 using namespace fit;
 
@@ -14,26 +16,17 @@ int main(int argn, char* argv[])
 	// Create the app
     App ex(argn, argv);
 
-	// Extract the ui, to perform action on it directly
+	// Extract UI to perform action on it directly
     UI& console = ex.ui();
 
     // Adding widgets
-    console.add("rect1" , new FWidget(FRect(0, 0, 3, 10)));
-    console.add("rect2" , new FWidget(FRect(0, 50, 10, 50)));
-    console.add("label1", new FLabel("hello world!", FRect(10, 2, 5, 7)));
+    console.add("rect1" , new FWidget(FRect(0, 0, 3, 10), &console));
+    console.add("rect2" , new FWidget(FRect(0, 50, 10, 50), &console));
+    console.add("label1", new FLabel("hello world!", FRect(10, 2, 5, 7), &console));
 
     // Accessing a widget of the ui
     console["rect2"]->initPattern(FPattern::test);
   //console["rect1"]->hide();
-
-    // Accessing directly the char grid
-    console[5][2] = 'y';
-    console[5][3] = 'a';
-    console[5][4] = 'y';
-
-    // Temporary workaround just to see a ui displayed
-    // (The ui is supposed to update and display itself on its own)
-	console.display();
 
 	// Debug
     std::cout << console["label1"]->toString() << std::endl;
@@ -52,7 +45,7 @@ which produce the following:
 ||        |                                       *****************************|
 |+--------+                                       *****************************|
 |                                                 *****************************|
-| yay                                             *****************************|
+|                                                 *****************************|
 |                                                 *****************************|
 |                                                 *****************************|
 |                                                 *****************************|
@@ -96,9 +89,9 @@ Documentation is done with doxygen. In order to generate the documentation, just
 
 
 ###### New:
-* Bug fix with cmake install which named libfit "liblibfit.so"
-* Moved the lib's static log out of the App class to the Log one
-* FStringList from file constructor
+* Input handled with its own thread, pushing key sstrokes to a list of events
+* UI thread too, refreshing itself every now and then
+* Parent - son relation in UI
 
 
 ###### Previous:
@@ -117,6 +110,10 @@ Documentation is done with doxygen. In order to generate the documentation, just
 * Implement Trees
 * Documentation with doxygen
 * Inherit exception classes
+* Add z-axis behavior
+* Refresh UI only when changed
+* More generic handling of events
+* Cleaner refresh (console write)
 
 
 ###### Bugs:

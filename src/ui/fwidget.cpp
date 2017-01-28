@@ -3,15 +3,16 @@
 namespace fit
 {
 
-FWidget::FWidget(const FRect& rect, const FPattern& pattern)
-	: FRect(rect), m_visible(true), m_gridChanged(false), m_pattern(pattern)
+FWidget::FWidget(const FRect& rect, FWidget* parent, const FPattern& pattern)
+	: FRect(rect), m_visible(true), m_gridChanged(false), m_parent(parent), m_pattern(pattern)
 {
 	createGrid();
 	initPattern(m_pattern);
 }
 
 FWidget::FWidget(const FWidget& other)
-	: FRect(other), m_visible(other.m_visible), m_grid(other.m_grid), m_gridChanged(true), m_pattern(other.m_pattern)
+	: FRect(other), m_visible(other.m_visible), m_grid(other.m_grid),
+	  m_gridChanged(true), m_parent(other.m_parent), m_pattern(other.m_pattern)
 {
 
 }
@@ -22,7 +23,7 @@ FWidget::~FWidget()
 }
 
 // Visibility Accessors
-void FWidget::setVisible(bool b) { if(m_visible != b) { m_visible = b; signalModif(); } }
+void FWidget::setVisible(bool b) { if(m_visible != b) { signalModif(); m_visible = b;} } // Should work as long as signalModif doesn't update the parent instantaneously
 void FWidget::hide()			 { setVisible(false); }
 void FWidget::unhide()			 { setVisible(true ); }
 bool FWidget::isVisible() const	 { return m_visible; }
@@ -31,7 +32,16 @@ bool FWidget::isVisible() const	 { return m_visible; }
 void FWidget::setSelectable(bool b) { if(m_selectable != b) { m_selectable = b; signalModif(); } }
 bool FWidget::isSelectable() const  { return m_selectable; }
 
-void FWidget::signalModif() const{} // Should be pure
+void FWidget::setParent(FWidget* parent) { m_parent = parent; }
+
+void FWidget::signalModif()
+{
+	if(m_visible)
+	{
+		m_gridChanged = true;
+		if(m_parent) m_parent->signalModif();
+	}
+}
 
 void FWidget::initPattern(const FPattern& pattern)
 {
@@ -72,12 +82,27 @@ void FWidget::createGrid()
 	}
 }
 
-void FWidget::refresh()
+void FWidget::refresh_internal()
 {
 	m_grid.clear();
 	createGrid();
 	initPattern(m_pattern);
-	m_gridChanged = false;
+}
+
+void FWidget::refresh()
+{
+	if(m_gridChanged)
+	{
+		this->refresh_internal();
+		m_gridChanged = false;
+
+		if(m_parent) m_parent->refresh();
+	}
+}
+
+bool FWidget::isChanged()
+{
+	return m_gridChanged;
 }
 
 std::vector<std::vector<char> >& FWidget::getCharGrid()

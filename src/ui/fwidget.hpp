@@ -12,7 +12,7 @@ class FWidget : public FRect
 {
     public:
 		// Constructors - Destructor
-			FWidget(const FRect& rect = FRect(0, 0, 0, 0), const FPattern& pattern= FPattern::defaultPattern);
+			FWidget(const FRect& rect = FRect(0, 0, 0, 0), FWidget* parent = nullptr, const FPattern& pattern= FPattern::defaultPattern);
 			FWidget(const FWidget& other);
 			virtual ~FWidget();
 
@@ -27,13 +27,16 @@ class FWidget : public FRect
 			void setSelectable(bool b);
 
 		// Rebuild the internal grid according to its content
-			virtual void refresh();
+			void refresh();
+			bool isChanged();
 
 		// Returns a copy of the updated internal grid (useful while displaying)
 			virtual std::vector<std::vector<char> >& getCharGrid();
 
 		// Signal that a modification has occured
-			void signalModif() const; // Should be pure, but not right now for debug purpose
+			virtual void signalModif();
+
+		void setParent(FWidget* parent);
 
 
 		void initPattern(const FPattern& pattern);
@@ -49,7 +52,7 @@ class FWidget : public FRect
 			virtual void 	seth(fuint16 height);
 			virtual void 	setw(fuint16 width );
 
-			virtual FString toString() const override;
+			FString toString() const override;
 
     protected:
 
@@ -63,11 +66,13 @@ class FWidget : public FRect
 		std::vector<std::vector<char> > m_grid;
 		bool m_gridChanged;
 		bool m_selectable;
+		FWidget* m_parent;
 
 		FString m_text;
 		const FPattern& m_pattern;
 
 		virtual void createGrid();
+		virtual void refresh_internal();
 
 }; // CLass FWidget
 

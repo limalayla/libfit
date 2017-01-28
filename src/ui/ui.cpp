@@ -6,14 +6,13 @@ namespace fit
 UI::UI(fuint16 height, fuint16 width)
 	: FWidget(FRect(0, 0, height, width))
 {
-
+	std::cout << "\033[2J";
 }
 
 UI::~UI()
 {
 
 }
-
 
 ///
 /// \brief UI::add adds a new widget to the ui, mapping it with a name
@@ -36,8 +35,9 @@ bool UI::add(const FString& name, FWidget* widget)
         return false;
 	}
 
+	widget->setParent(this);
 	m_widgets[name] = std::shared_ptr<FWidget>(widget);
-	m_gridChanged = true;
+	this->signalModif();
     return true;
 }
 
@@ -66,6 +66,7 @@ bool UI::del(const FString& name)
 	if(m_widgets.find(name) != m_widgets.end())
 	{
 		m_widgets.erase(m_widgets.find(name));
+		this->signalModif();
 		return true;
 	}
 
@@ -73,14 +74,20 @@ bool UI::del(const FString& name)
 	return false;
 }
 
-void UI::refresh()
+void UI::refresh_internal()
 {
+	// Big overhead but assured to have good format
+	FWidget::refresh_internal();
+
 	std::vector<std::vector<char> > widget;
 
-    for(auto it= m_widgets.begin(); it!= m_widgets.end() ; ++it)
+	// For all widgets
+    for(auto it= m_widgets.begin(); it!= m_widgets.end(); ++it)
 	{
+		// If it isn't hid
         if(it->second->isVisible())
         {
+	        // Then add its content to the UI
             widget = it->second->getCharGrid();
 
             for(fuint16 i= 0; i< widget.size() && it->second->getx() + i< height-1; i++)
@@ -92,42 +99,47 @@ void UI::refresh()
 				}
 			}
 
+			// Empty the temporary variable for next loop
+			// Useful?
 			widget.clear();
 		}
 	}
-
-	m_gridChanged = false;
 }
 
 void UI::display()
 {
-	if(m_gridChanged) refresh();
+	if(m_gridChanged) this->refresh();
+
+	std::cout << "\033[1;1H";
 
 	for(fuint16 i= 0; i< height; i++)
 	{
 		for(fuint16 j= 0; j< width; j++)
 		{
-			std::cout << m_grid[i][j];
+			putchar(m_grid[i][j]);
 		}
 		std::cout << std::endl;
     }
-
-    std::cout << std::endl;
 }
 
 FString UI::output() const
 {
-	return "";
+	std::stringstream ret;
+
+	for(fuint32 i= 0; i< m_grid.size(); i++)
+		for(fuint32 j= 0; j< m_grid[0].size(); j++)
+			ret << m_grid[i][j];
+
+	return ret.str();
 }
 
 void UI::run(const bool* stop)
-{/*
-    while(!stop)
+{
+    while(!*stop)
     {
-        std::unique_lock<std::mutex> lk(m);
-        cv.wait(lk);
+	    std::this_thread::sleep_for(std::chrono::milliseconds(100));
         display();
-    }*/
+    }
 }
 
 std::shared_ptr<FWidget> UI::operator[](const FString& name) { return get(name); }

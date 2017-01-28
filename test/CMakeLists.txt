@@ -12,3 +12,6 @@ target_link_libraries (matrix fit)
 
 add_executable (stringlist stringlist.cpp)
 target_link_libraries (stringlist fit)
+
+add_executable (input input.cpp)
+target_link_libraries (input fit)

@@ -9,8 +9,8 @@ namespace fit
  * \param type: Type of the event.
  * \param arg: Options for the event.
  */
-FEvent::FEvent(fuint16 type, void* arg)
-	: FObject(), m_type(type), m_arg(arg)
+FEvent::FEvent(FEvent::Type eventType, FObject& arg)
+	: FObject(), m_type(eventType), m_arg(arg)
 {}
 
 /*!
@@ -18,7 +18,10 @@ FEvent::FEvent(fuint16 type, void* arg)
  */
 FEvent::~FEvent()
 {
-	if(m_arg != nullptr) delete m_arg;
+
 }
+
+FEvent::Type     FEvent::getType() { return m_type; }
+FEvent::FObject& FEvent::getArg()  { return m_arg; }
 
 } // namespace fit

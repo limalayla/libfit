@@ -13,18 +13,25 @@ namespace fit
  */
 class FEvent : public FObject
 {
-    public:
-		// Constructors - Destructor
-        FEvent(fuint16 type, void* arg);
-        virtual ~FEvent();
+public:
+    enum class Type
+    {
+    	keyPressed,
+    	keyReleased
+    };
 
-        void wait();
+    // Constructors - Destructor
+    FEvent(Type type, FObject& arg);
+    virtual ~FEvent();
 
-    private:
-        //std::mutex m_mutex;
-        //std::condition_variable m_cv;
-        fuint16 m_type;
-        void*   m_arg;      /* Options passed along with the event */
+    Type     getType();
+    FObject& getArg();
+
+private:
+    //std::mutex m_mutex;
+    //std::condition_variable m_cv;
+    Type m_type;
+    FObject m_arg;      /* Options passed along with the event */
 
 }; // Class FEvent
 

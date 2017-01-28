@@ -6,8 +6,8 @@ namespace fit
 /*!
  * \brief FInputHandler::FInputHandler Default constructor
  */
-FInputHandler::FInputHandler()
-	: FObject()
+FInputHandler::FInputHandler(App& parent)
+	: FObject(), m_parent(parent)
 {}
 
 /*!
@@ -15,7 +15,7 @@ FInputHandler::FInputHandler()
  */
 FInputHandler::~FInputHandler()
 {
-	
+
 }
 
 /*!
@@ -24,12 +24,13 @@ FInputHandler::~FInputHandler()
  */
 void FInputHandler::run(const bool* stop)
 {
-	char input(' ');
-	
+	FChar input;
+
 	while(!*stop)
 	{
-		input = std::cin.get();
-        //App::addEvent(FEvent::Type::keyPressed, (void*) new char(input));
+		input.set(std::cin.get());
+        m_parent.addEvent(FEvent::Type::keyPressed, input);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
 

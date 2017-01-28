@@ -9,7 +9,7 @@ int main(int argn, char* argv[])
 	// Create the app
     App ex(argn, argv);
 
-	// Extract the ui, to perform action on it directly
+	// Extract UI to perform action on it directly
     UI& console = ex.ui();
 
     // Adding widgets
@@ -25,10 +25,7 @@ int main(int argn, char* argv[])
     console[5][2] = 'y';
     console[5][3] = 'a';
     console[5][4] = 'y';
-
-    // Temporary workaround just to see a ui displayed
-    // (The ui is supposed to update and display itself on its own)
-	console.display();
+    console.signalModif();
 
 	// Debug
     std::cout << console["label1"]->toString() << std::endl;

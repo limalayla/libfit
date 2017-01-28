@@ -11,37 +11,17 @@ namespace fit
  */
 App::App(const fuint16 argn, char* argv[])
     :	FObject(),
-        m_inputHandling(), m_stopInputThread(new bool(false)),
-        m_ui(), m_stopUIThread(new bool(false)),
+        m_inputHandler(*this), m_stopInputThread(false),
+        m_ui(), m_stopUIThread(false),
         m_state(0),
         m_argn(argn)
 {
     setBlockingInput(false);
-    //m_inputThread = std::thread(m_inputHandling.run, m_stopInputThread);
-    //m_UIThread = std::thread(m_ui.run, m_stopUIThread);
+    m_inputThread = std::thread(&FInputHandler::run, &m_inputHandler, &m_stopInputThread);
+    m_UIThread = std::thread(&UI::run, &m_ui, &m_stopUIThread);
 
     // argv handling
-    //m_argv(FStringList(argv));
-}
-
-/*!
- * App Special Constructor.
- *
- * \param eEgg: Identifier of the easter egg
- */
-App::App(const EasterEgg& eEgg)
-    :	App()
-{
-    if(eEgg == EasterEgg::AmericanFlag)
-    {
-        m_ui.add("stars", new FWidget(FRect( 1,  1, 10, 30), FPattern::test));
-        m_ui.add("band1", new FWidget(FRect( 1, 30,  2, 50), FPattern::band));
-        m_ui.add("band2", new FWidget(FRect( 5, 30,  2, 50), FPattern::band));
-        m_ui.add("band3", new FWidget(FRect( 9, 30,  2, 50), FPattern::band));
-        m_ui.add("band4", new FWidget(FRect(13,  1,  2, 80), FPattern::band));
-        m_ui.add("band5", new FWidget(FRect(17,  1,  2, 80), FPattern::band));
-        m_ui.add("band6", new FWidget(FRect(21,  1,  2, 80), FPattern::band));
-    }
+    //m_argv(argv);
 }
 
 /*!
@@ -49,22 +29,19 @@ App::App(const EasterEgg& eEgg)
  */
 App::~App()
 {
-    setBlockingInput(true);
-
-    if(m_stopInputThread != nullptr && !m_stopInputThread && m_inputThread.joinable())
+    if(!m_stopInputThread && m_inputThread.joinable())
 	{
-		*m_stopInputThread = true;
+		m_stopInputThread = true;
 		m_inputThread.join();
 	}
 
-    if(m_stopUIThread != nullptr && !m_stopUIThread && m_UIThread.joinable())
+    if(!m_stopUIThread && m_UIThread.joinable())
 	{
-		*m_stopUIThread = true;
+		m_stopUIThread = true;
 		m_UIThread.join();
 	}
 
-    if(m_stopInputThread != nullptr) delete m_stopInputThread;
-    if(m_stopUIThread != nullptr)    delete m_stopUIThread;
+    setBlockingInput(true);
 }
 
 /*!
@@ -106,19 +83,46 @@ void App::setBlockingInput(bool enable)
 UI& App::ui() { return m_ui; }
 
 /*!
- * \todo
+ * Add an event to a static list
+ *
+ * \todo Test
  */
-void App::addEvent(fuint16 typeEvent, void* arg)
+void App::addEvent(FEvent::Type typeEvent, FObject& arg)
 {
-	//App::m_events.push_back(FEvent(typeEvent, arg));
+	m_eventMutex.lock();
+	m_events.push_back(FEvent(typeEvent, arg));
+	m_ui.add("labeldebug", new FLabel("fg", FRect(6, 6, 6, 6)));
+	m_eventMutex.unlock();
 }
 
 /*!
- * \todo
+ * Add an event to a static list
+ *
+ * \todo Test
+ */
+void App::addEvent(FEvent::Type typeEvent, FChar& arg)
+{
+	m_eventMutex.lock();
+	m_events.push_back(FEvent(typeEvent, arg));
+
+	// Temporary
+		char tmp = arg.get();
+		FInput* input = static_cast<FInput*>(m_ui["input1"].get());
+		input->putChar(tmp);
+
+	m_eventMutex.unlock();
+}
+
+/*!
+ * Remove an event from the static list of events
+ *
+ * \todo Test
  */
 void App::delEvent(fuint32 id)
 {
-	//App::m_events.erase(m_events.begin() + id);
+	m_eventMutex.lock();
+	m_events.erase(m_events.begin() + id);
+	m_eventMutex.unlock();
 }
 
 /*!

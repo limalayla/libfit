@@ -26,6 +26,7 @@ class FPattern : public FObject
 			static const FPattern none;
 			static const FPattern test;
 			static const FPattern band;
+			static const FPattern input;
 			static const FPattern defaultPattern;
 
         // Members accessors
