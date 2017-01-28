@@ -6,8 +6,9 @@ namespace fit
 
 const FPattern FPattern::none				(' ', ' ', ' ', ' ');
 const FPattern FPattern::test				('*', '*', '*', '*');
-const FPattern FPattern::defaultPattern		(' ', '|', '-', '+');
 const FPattern FPattern::band				('/', '/', '/', '/');
+const FPattern FPattern::input				('_', '|', '-', '+');
+const FPattern FPattern::defaultPattern		(' ', '|', '-', '+');
 
 /*!
  * \brief FPattern::FPattern 1st constructor (light)

@@ -2,22 +2,30 @@
 #define FINPUTHANDLER_COMPILED
 
 #include "../core/fthreadable.hpp"
+#include "../core/fchar.hpp"
+#include "../core/fevent.hpp"
+//#include "../core/app.hpp"
 
 namespace fit
 {
+
+class App;
 
 /*!
  * \brief The FInputHandler class handles all inputs (keyboard etc) and create adequate events
  */
 class FInputHandler : public FThreadable
 {
-    public:
-		// Constructors - Destructor
-        FInputHandler();
-        virtual ~FInputHandler();
+public:
+	// Constructors - Destructor
+	FInputHandler(App& parent);
+	virtual ~FInputHandler();
 
-		// Override of the start() function
-        void run(const bool* stop) override;
+	// Override of the start() function
+	void run(const bool* stop) override;
+
+private:
+	App& m_parent;
 };
 
 }
