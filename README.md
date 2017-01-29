@@ -1,5 +1,5 @@
 # libfit
-C++ Library For CLI GUI, File Management And Other Cool Things
+Standalone C++ Library For CLI GUI, File Management And Other Cool Things
 
 It is far from finished, but here is an overview of the current look and target of the library:
 
@@ -89,33 +89,29 @@ Documentation is done with doxygen. In order to generate the documentation, just
 
 
 ###### New:
-* Input handled with its own thread, pushing key sstrokes to a list of events
+* Started doing generic event handling
+* Matrices exception class
+
+
+###### Previous:
+* Input handled with its own thread, pushing key strokes to a list of events
 * UI thread too, refreshing itself every now and then
 * Parent - son relation in UI
 
 
-###### Previous:
-* Documentation of every core classes
-* Renamed height and width into row and col in fmatrix.hpp
-* Implemented Strings List and used it in App
-* Lots and lots of code cleaning
-
-
 ###### ToDo:
-* Redefine usefulness of a member grid is really useful for every widgets since the ui takes a copy of it
-* Multi - thread support
-* Evenements logic
-* UI : Inputs
-       Lists
+* UI : Lists
 * Implement Trees
 * Documentation with doxygen
 * Inherit exception classes
 * Add z-axis behavior
 * Refresh UI only when changed
-* More generic handling of events
 * Cleaner refresh (console write)
+* Continue implementing events hadling
+* Move registerEvent to FObject?
 
 
 ###### Bugs:
 * Tools::keyFromValue randomly throwing segmentation faults (haven't reproduced since some time)
+* Probably going to have issues including App in UI and UI in App (even with incomplete declaration)
 * Open an issue if you see any!

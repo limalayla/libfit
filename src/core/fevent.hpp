@@ -7,17 +7,15 @@ namespace fit
 {
 
 /*!
- * Class representing any kind of evenement, along with some options (eg: keyPressed - keyID)
- *
- * \todo Find a way of working (only that… *sigh*)
+ * Class representing any kind of evenement, along with some options (eg: keyPressed -> keyID)
  */
 class FEvent : public FObject
 {
 public:
-    enum class Type
+    enum Type
     {
     	keyPressed,
-    	keyReleased
+    	dummy
     };
 
     // Constructors - Destructor

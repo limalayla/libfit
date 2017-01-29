@@ -52,6 +52,37 @@ class FMatrix : public FObject
         std::vector<std::vector<T> > m_mat;
 };
 
+MACRO_TEMPLATED
+class incompatible_fmatrices : public std::logic_error
+{
+protected:
+	FString m_what;
+	
+public:
+	incompatible_fmatrices(const FMatrix<T>& mat1, const FMatrix<T>& mat2/*, const FString& fileName, const fuint16 lineNumber*/)
+	{
+		bool wrongcol{mat1.ncol() != mat2.nrow()};
+		bool wrongrow{mat1.nrow() != mat2.ncol()};
+
+		std::stringstream ss{"Wrong matrices size for a matrix product: "};
+		if(wrongcol)
+		{
+			ss << mat1.ncol() << " != " << mat2.nrow();
+			if(wrongrow) ss << " and ";
+		}
+
+		if(wrongrow) ss << mat1.nrow() << " != " << mat2.ncol();
+		
+		m_what = ss.str();
+	}
+
+	virtual FString what()
+	{
+		return m_what;
+	}
+};
+
+
 MACRO_TEMPLATED FMatrix<T> operator+(const FMatrix<T>& mat1, const FMatrix<T>& mat2);
 MACRO_TEMPLATED FMatrix<T> operator-(const FMatrix<T>& mat1, const FMatrix<T>& mat2);
 MACRO_TEMPLATED FMatrix<T> operator*(const FMatrix<T>& mat1, const FMatrix<T>& mat2);

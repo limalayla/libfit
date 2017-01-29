@@ -7,11 +7,13 @@
 namespace fit
 {
 
+class App;
+
 class UI : public FWidget, public FThreadable
 {
     public:
 		// Constructors - Destructor
-        UI(fuint16 height= 24, fuint16 width= 80);
+        UI(App& parentApp, fuint16 height= 24, fuint16 width= 80);
         virtual ~UI();
 
         // Accessors Widgets
@@ -37,6 +39,10 @@ class UI : public FWidget, public FThreadable
 
     protected:
 		std::map<FString, std::shared_ptr<FWidget> > m_widgets;
+		App& m_parentApp;
+		
+		void onKeyPressed(FObject& arg);
+		
 
 	#ifdef DEBUG
 		private: void d_dispWidgets() const;
@@ -44,5 +50,7 @@ class UI : public FWidget, public FThreadable
 };
 
 }
+
+#include "../core/app.hpp"
 
 #endif //UI_COMPILED

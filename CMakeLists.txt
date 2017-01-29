@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.0)
 project (fit)
 
 set (CMAKE_VERBOSE_MAKEFILE off)
-set (libfit_version 0.6.0)
+set (libfit_version 0.6.1)
 
 find_package(Threads REQUIRED)
 

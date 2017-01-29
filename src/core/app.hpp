@@ -25,9 +25,11 @@ class App : public FObject
         virtual ~App();
 
         void addEvent(FEvent::Type typeEvent, FObject& arg);
-        void addEvent(FEvent::Type typeEvent, FChar& arg);
         void delEvent(fuint32 id);
         static void setBlockingInput(bool enable);
+                    
+        //! Bind a function to a specific type of event
+        void registerEvent(FEvent::Type typeEvent, std::function<void(FObject&)> callback);
 
         UI& ui();
         int  state() const;
@@ -35,24 +37,39 @@ class App : public FObject
 
 	private:
         // Input Handling
-            //! Object meant to manage events related to input (keyboard etc). Reffer to the FInputHandler doc for further information.
+            //! Object managing keyboard related events.
             FInputHandler m_inputHandler;
-
-            //! Boolean controlling the thread interuption.
-            bool m_stopInputThread;
 
             //! Thread checking the inputs alongside the app.
             std::thread m_inputThread;
+            
+            //! Boolean controlling the thread interuption.
+            bool m_stopInputThread;
 
 		// UI Handling
             //! UI Object: Holds widget, refresh ui etc. Reffer to the UI doc for further information.
             UI m_ui;
 
+            //! Thread running the UI alongside the app.
+            std::thread m_UIThread;
+            
             //! Boolean controlling the thread interuption.
             bool m_stopUIThread;
 
-            //! Thread running the UI alongside the app.
-            std::thread m_UIThread;
+
+		// Event Handling
+            //! meh.
+            std::map<FEvent::Type, std::function<void(FObject&)> >m_registredFunctions;
+            
+            //! Event Handling Daemon
+            void eventDaemon();
+
+            //! Thread running the event daemon alongside the app.
+            std::thread m_eventThread;
+            
+            //! Boolean controlling the thread interuption.
+            bool m_stopEventThread;
+            
 
         //! All event of the app.
         std::vector<FEvent> m_events;

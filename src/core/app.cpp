@@ -12,16 +12,14 @@ namespace fit
 App::App(const fuint16 argn, char* argv[])
     :	FObject(),
         m_inputHandler(*this), m_stopInputThread(false),
-        m_ui(), m_stopUIThread(false),
-        m_state(0),
-        m_argn(argn)
+        m_ui(*this), m_stopUIThread(false),
+    	m_stopEventThread(false),
+        m_state(0), m_argn(argn), m_argv(argv)
 {
     setBlockingInput(false);
     m_inputThread = std::thread(&FInputHandler::run, &m_inputHandler, &m_stopInputThread);
     m_UIThread = std::thread(&UI::run, &m_ui, &m_stopUIThread);
-
-    // argv handling
-    //m_argv(argv);
+    //m_eventThread = std::thread(&App::eventDaemon, this, &m_stopEventThread);
 }
 
 /*!
@@ -39,6 +37,12 @@ App::~App()
 	{
 		m_stopUIThread = true;
 		m_UIThread.join();
+	}
+	
+    if(!m_stopEventThread && m_eventThread.joinable())
+	{
+		m_stopEventThread = true;
+		m_eventThread.join();
 	}
 
     setBlockingInput(true);
@@ -91,26 +95,24 @@ void App::addEvent(FEvent::Type typeEvent, FObject& arg)
 {
 	m_eventMutex.lock();
 	m_events.push_back(FEvent(typeEvent, arg));
-	m_ui.add("labeldebug", new FLabel("fg", FRect(6, 6, 6, 6)));
+	
+	if(typeEvent == FEvent::keyPressed)
+	{
+		FChar&  tmp   = static_cast<FChar&>(arg);
+		FInput* input = static_cast<FInput*>(m_ui["input1"].get());
+		input->putChar(tmp.get());
+	}
+	else
+	{
+		m_ui.add("labeldebug", new FLabel("fg", FRect(6, 6, 6, 6)));
+	}
+	
 	m_eventMutex.unlock();
 }
 
-/*!
- * Add an event to a static list
- *
- * \todo Test
- */
-void App::addEvent(FEvent::Type typeEvent, FChar& arg)
+void App::registerEvent(FEvent::Type typeEvent, std::function<void(FObject&)> callback)
 {
-	m_eventMutex.lock();
-	m_events.push_back(FEvent(typeEvent, arg));
-
-	// Temporary
-		char tmp = arg.get();
-		FInput* input = static_cast<FInput*>(m_ui["input1"].get());
-		input->putChar(tmp);
-
-	m_eventMutex.unlock();
+	
 }
 
 /*!

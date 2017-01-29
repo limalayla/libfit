@@ -14,6 +14,7 @@
 #include <thread>
 #include <stdexcept>
 #include <vector>
+#include <functional>
 
 #define DEBUG
 

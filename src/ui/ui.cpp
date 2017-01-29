@@ -3,10 +3,11 @@
 namespace fit
 {
 
-UI::UI(fuint16 height, fuint16 width)
-	: FWidget(FRect(0, 0, height, width))
+UI::UI(App& parentApp, fuint16 height, fuint16 width)
+	: FWidget(FRect(0, 0, height, width)), m_parentApp(parentApp)
 {
 	std::cout << "\033[2J";
+	//m_parentApp.registerEvent(FEvent::Type::keyPressed, onKeyPressed);
 }
 
 UI::~UI()
@@ -79,7 +80,7 @@ void UI::refresh_internal()
 	// Big overhead but assured to have good format
 	FWidget::refresh_internal();
 
-	std::vector<std::vector<char> > widget;
+	//std::vector<std::vector<char> >& widget;
 
 	// For all widgets
     for(auto it= m_widgets.begin(); it!= m_widgets.end(); ++it)
@@ -88,7 +89,7 @@ void UI::refresh_internal()
         if(it->second->isVisible())
         {
 	        // Then add its content to the UI
-            widget = it->second->getCharGrid();
+            std::vector<std::vector<char> >& widget = it->second->getCharGrid();
 
             for(fuint16 i= 0; i< widget.size() && it->second->getx() + i< height-1; i++)
 			{
@@ -131,6 +132,18 @@ FString UI::output() const
 			ret << m_grid[i][j];
 
 	return ret.str();
+}
+
+void onKeyPressed(FObject& arg)
+{
+	FChar& key = dynamic_cast<FChar&>(arg);
+	
+	switch (key.get())
+	{
+		case 'a' :  std::cout << "Inputed a" << std::endl;
+					break;
+		default:	std::cout << "Nothing" << std::endl;
+	}
 }
 
 void UI::run(const bool* stop)
