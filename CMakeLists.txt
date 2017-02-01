@@ -2,9 +2,8 @@ cmake_minimum_required (VERSION 3.0)
 project (fit)
 
 set (CMAKE_VERBOSE_MAKEFILE off)
-set (libfit_version 0.6.1)
+set (libfit_version 0.7)
 
-find_package(Threads REQUIRED)
 
 add_compile_options (-std=c++14)
 add_compile_options (-Wall)

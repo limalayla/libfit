@@ -7,7 +7,10 @@ UI::UI(App& parentApp, fuint16 height, fuint16 width)
 	: FWidget(FRect(0, 0, height, width)), m_parentApp(parentApp)
 {
 	std::cout << "\033[2J";
-	//m_parentApp.registerEvent(FEvent::Type::keyPressed, onKeyPressed);
+
+	using namespace std::placeholders;
+	m_parentApp.registerSlot(FEvent::Type::keyPressed, std::bind(&UI::onKeyPressed, this, _1));
+	m_gridChanged = true;
 }
 
 UI::~UI()
@@ -112,6 +115,7 @@ void UI::display()
 	if(m_gridChanged) this->refresh();
 
 	std::cout << "\033[1;1H";
+	//std::cout << std::endl << std::endl << std::endl;
 
 	for(fuint16 i= 0; i< height; i++)
 	{
@@ -134,16 +138,17 @@ FString UI::output() const
 	return ret.str();
 }
 
-void onKeyPressed(FObject& arg)
+void UI::onKeyPressed(FObject& arg)
 {
 	FChar& key = dynamic_cast<FChar&>(arg);
-	
-	switch (key.get())
+
+	if(!m_widgets["testInput"])
 	{
-		case 'a' :  std::cout << "Inputed a" << std::endl;
-					break;
-		default:	std::cout << "Nothing" << std::endl;
+		this->add("testInput" , new FInput("", false, this, FRect(5, 5, 3, 30)));
 	}
+
+	FInput* input = dynamic_cast<FInput*>(m_widgets["testInput"].get());
+	input->putChar(key.get());
 }
 
 void UI::run(const bool* stop)
@@ -151,7 +156,7 @@ void UI::run(const bool* stop)
     while(!*stop)
     {
 	    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        display();
+        if(m_gridChanged) display();
     }
 }
 

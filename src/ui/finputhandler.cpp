@@ -29,8 +29,7 @@ void FInputHandler::run(const bool* stop)
 	while(!*stop)
 	{
 		input.set(std::cin.get());
-        m_parent.addEvent(FEvent::Type::keyPressed, input);
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        m_parent.signal(FEvent::Type::keyPressed, input);
 	}
 }
 

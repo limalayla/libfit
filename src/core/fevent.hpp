@@ -15,7 +15,7 @@ public:
     enum Type
     {
     	keyPressed,
-    	dummy
+    	dummySize
     };
 
     // Constructors - Destructor

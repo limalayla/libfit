@@ -5,9 +5,7 @@ It is far from finished, but here is an overview of the current look and target 
 
 
 ```c++
-#include "../src/core/app.hpp"
-#include "../src/ui/flabel.hpp"
-//#include <libfit/all>
+#include <libfit/all>
 
 using namespace fit;
 
@@ -70,15 +68,15 @@ UI {nbWidgets= 3, FRect {h= 24, w= 80, FVec2 {x= 0, y= 0, FObject {8 [0x7ffe8690
 0
 ```
 
-This library is aimed to linux cli users, but should be cross-platform.
+This library is aimed to Linux CLI users, but should be cross-platform.
 
 
 ## Installation
-Installation is done with cmake. So as usual, after having cloned the repo:
+Installation is done with cmake. So as usual, after having cloned the repository:
 ```bash
 mkdir build && cd $_
 cmake ..
-make # To build the library and examples in the project (under the src and test subfolders of build)
+make # To build the library and examples in the project (under the src and test sub-folders of build)
 # Or
 sudo make install # To build then install the library and headers in the right place
 ```
@@ -89,14 +87,12 @@ Documentation is done with doxygen. In order to generate the documentation, just
 
 
 ###### New:
-* Started doing generic event handling
-* Matrices exception class
+* Generic event handling finished (yet to be tested)
 
 
 ###### Previous:
-* Input handled with its own thread, pushing key strokes to a list of events
-* UI thread too, refreshing itself every now and then
-* Parent - son relation in UI
+* Started doing generic event handling
+* Matrices exception class
 
 
 ###### ToDo:
@@ -104,14 +100,15 @@ Documentation is done with doxygen. In order to generate the documentation, just
 * Implement Trees
 * Documentation with doxygen
 * Inherit exception classes
-* Add z-axis behavior
+* Add z-axis behaviour
 * Refresh UI only when changed
 * Cleaner refresh (console write)
-* Continue implementing events hadling
-* Move registerEvent to FObject?
+* Improve event registering with macros
+* Design decision:
+	* Allow multiple slots for a single event type?
+	* Handle a signal emitted before its slot is registered?
 
 
 ###### Bugs:
 * Tools::keyFromValue randomly throwing segmentation faults (haven't reproduced since some time)
-* Probably going to have issues including App in UI and UI in App (even with incomplete declaration)
 * Open an issue if you see any!

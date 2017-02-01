@@ -19,6 +19,8 @@ public:
 	char get();
 	void set(char c);
 
+	FString toString() const override;
+
 private:
 	char m_char;
 

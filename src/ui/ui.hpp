@@ -40,9 +40,9 @@ class UI : public FWidget, public FThreadable
     protected:
 		std::map<FString, std::shared_ptr<FWidget> > m_widgets;
 		App& m_parentApp;
-		
+
 		void onKeyPressed(FObject& arg);
-		
+
 
 	#ifdef DEBUG
 		private: void d_dispWidgets() const;

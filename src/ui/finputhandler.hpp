@@ -8,11 +8,12 @@
 
 namespace fit
 {
-
 class App;
 
 /*!
  * \brief The FInputHandler class handles all inputs (keyboard etc) and create adequate events
+ *
+ * Quite simple as of now, but could get more complex as features are added
  */
 class FInputHandler : public FThreadable
 {

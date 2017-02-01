@@ -24,66 +24,70 @@ class App : public FObject
         App(const fuint16 argn= 0, char* argv[]= nullptr);
         virtual ~App();
 
-        void addEvent(FEvent::Type typeEvent, FObject& arg);
-        void delEvent(fuint32 id);
         static void setBlockingInput(bool enable);
-                    
+
+        //!
+        void signal(FEvent::Type typeEvent, FObject& arg);
+
         //! Bind a function to a specific type of event
-        void registerEvent(FEvent::Type typeEvent, std::function<void(FObject&)> callback);
+        void registerSlot(FEvent::Type typeEvent, std::function<void(FObject&)> callback);
 
         UI& ui();
         int  state() const;
         void setState(int state);
 
-	private:
-        // Input Handling
-            //! Object managing keyboard related events.
-            FInputHandler m_inputHandler;
+protected:
 
-            //! Thread checking the inputs alongside the app.
-            std::thread m_inputThread;
-            
-            //! Boolean controlling the thread interuption.
-            bool m_stopInputThread;
+	// Event Handling
+	    // When an event is received, a matching slot is called, this vector keeps record of those slots.
+	    std::vector<std::pair<FEvent::Type, std::function<void(FObject&)>>> m_slots;
 
-		// UI Handling
-            //! UI Object: Holds widget, refresh ui etc. Reffer to the UI doc for further information.
-            UI m_ui;
+	    // Event handling thread.
+	    std::thread m_eventThread;
 
-            //! Thread running the UI alongside the app.
-            std::thread m_UIThread;
-            
-            //! Boolean controlling the thread interuption.
-            bool m_stopUIThread;
+	    // Function ran by the event thread.
+	    void eventDaemon();
+
+	    // Event thread control.
+	    std::condition_variable m_wakeEventDaemon;
+	    std::mutex m_eventMutex;
+	    bool m_stopEventThread;
+
+		// Link between the event's emitter thread and the event handling thread.
+	    FEvent::Type m_curEventType;
+	    FObject*     m_curEventArg;
 
 
-		// Event Handling
-            //! meh.
-            std::map<FEvent::Type, std::function<void(FObject&)> >m_registredFunctions;
-            
-            //! Event Handling Daemon
-            void eventDaemon();
+	// Input Handling
+		// Object managing keyboard related events.
+		FInputHandler m_inputHandler;
 
-            //! Thread running the event daemon alongside the app.
-            std::thread m_eventThread;
-            
-            //! Boolean controlling the thread interuption.
-            bool m_stopEventThread;
-            
+		// Thread checking the inputs alongside the app.
+		std::thread m_inputThread;
 
-        //! All event of the app.
-        std::vector<FEvent> m_events;
-        std::mutex m_eventMutex;
+		// Boolean controlling the thread interuption.
+		bool m_stopInputThread;
 
-        // Links to the os
-            //! State of the app (Equivalent to the main's return value).
-            int m_state;
+	// Input Handling
+		// UI Object: Holds widget, refresh ui etc. Reffer to the UI doc for further information.
+		UI m_ui;
 
-            //! Number of arguments of the command line (1st one being the command itself).
-            fuint8 m_argn;
+		// Thread running the UI alongside the app.
+		std::thread m_UIThread;
 
-            //! Array of strings to those arguments.
-            FStringList m_argv;
+		// Boolean controlling the thread interuption.
+		bool m_stopUIThread;
+
+
+	// Links to the os
+		//! State of the app (Equivalent to the main's return value).
+		int m_state;
+
+		//! Number of arguments of the command line (1st one being the command itself).
+		fuint8 m_argn;
+
+		//! Array of strings to those arguments.
+		FStringList m_argv;
 
 }; // Class App
 

@@ -9,6 +9,8 @@ file (GLOB libfit_header
 )
 
 add_library (fit SHARED ${libfit_src} ${libfit_header})
+
+find_package(Threads REQUIRED)
 target_link_libraries( fit ${CMAKE_THREAD_LIBS_INIT} )
 
 set_target_properties (fit

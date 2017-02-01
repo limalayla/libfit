@@ -11,15 +11,16 @@ namespace fit
  */
 App::App(const fuint16 argn, char* argv[])
     :	FObject(),
+	    m_slots(), m_stopEventThread(false), m_curEventArg(nullptr),
         m_inputHandler(*this), m_stopInputThread(false),
         m_ui(*this), m_stopUIThread(false),
-    	m_stopEventThread(false),
         m_state(0), m_argn(argn), m_argv(argv)
 {
     setBlockingInput(false);
+
     m_inputThread = std::thread(&FInputHandler::run, &m_inputHandler, &m_stopInputThread);
-    m_UIThread = std::thread(&UI::run, &m_ui, &m_stopUIThread);
-    //m_eventThread = std::thread(&App::eventDaemon, this, &m_stopEventThread);
+    m_UIThread    = std::thread(&UI::run, &m_ui, &m_stopUIThread);
+    m_eventThread = std::thread(&App::eventDaemon, this);
 }
 
 /*!
@@ -27,23 +28,26 @@ App::App(const fuint16 argn, char* argv[])
  */
 App::~App()
 {
-    if(!m_stopInputThread && m_inputThread.joinable())
-	{
-		m_stopInputThread = true;
-		m_inputThread.join();
-	}
 
     if(!m_stopUIThread && m_UIThread.joinable())
 	{
 		m_stopUIThread = true;
 		m_UIThread.join();
 	}
-	
+
     if(!m_stopEventThread && m_eventThread.joinable())
-	{
-		m_stopEventThread = true;
-		m_eventThread.join();
-	}
+    {
+    	m_eventMutex.unlock();
+    	m_stopEventThread = true;
+    	m_wakeEventDaemon.notify_one();
+    	m_eventThread.join();
+    }
+
+    if(!m_stopInputThread && m_inputThread.joinable())
+   	{
+   		m_stopInputThread = true;
+   		m_inputThread.join();
+   	}
 
     setBlockingInput(true);
 }
@@ -87,43 +91,49 @@ void App::setBlockingInput(bool enable)
 UI& App::ui() { return m_ui; }
 
 /*!
- * Add an event to a static list
- *
- * \todo Test
+ * Calls the events thread to search a matching slot.
  */
-void App::addEvent(FEvent::Type typeEvent, FObject& arg)
+void App::signal(FEvent::Type typeEvent, FObject& arg)
 {
 	m_eventMutex.lock();
-	m_events.push_back(FEvent(typeEvent, arg));
-	
-	if(typeEvent == FEvent::keyPressed)
-	{
-		FChar&  tmp   = static_cast<FChar&>(arg);
-		FInput* input = static_cast<FInput*>(m_ui["input1"].get());
-		input->putChar(tmp.get());
-	}
-	else
-	{
-		m_ui.add("labeldebug", new FLabel("fg", FRect(6, 6, 6, 6)));
-	}
-	
+
+	m_curEventType = typeEvent;
+	m_curEventArg  = &arg;
+	m_wakeEventDaemon.notify_one();
+
 	m_eventMutex.unlock();
 }
 
-void App::registerEvent(FEvent::Type typeEvent, std::function<void(FObject&)> callback)
+void App::eventDaemon()
 {
-	
+	std::mutex m;
+	std::unique_lock<std::mutex> lock(m);
+
+	while(!m_stopEventThread)
+	{
+		m_wakeEventDaemon.wait(lock);
+
+		if(!m_stopEventThread)
+		{
+			for(const auto& it : m_slots)
+			{
+				if(it.first == m_curEventType)
+				{
+					it.second(*m_curEventArg);
+				}
+			}
+		}
+
+	}
 }
 
-/*!
- * Remove an event from the static list of events
- *
- * \todo Test
- */
-void App::delEvent(fuint32 id)
+void App::registerSlot(FEvent::Type typeEvent, std::function<void(FObject&)> callback)
 {
 	m_eventMutex.lock();
-	m_events.erase(m_events.begin() + id);
+
+	std::pair<FEvent::Type, std::function<void(FObject&)> > test(typeEvent, callback);
+	m_slots.push_back(test);
+
 	m_eventMutex.unlock();
 }
 
